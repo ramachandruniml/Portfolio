@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mallika Laasya Ramachandruni</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@1,300;1,400;1,500;1,600&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --pink:      #fce8f0;
+            --rose:      #b05070;
+            --rose-dark: #7a3050;
+            --text:      #1a0a12;
+            --text-mid:  #6b3050;
+            --card-bg:   rgba(255, 255, 255, 0.55);
+            --nav-bg:    rgba(252, 232, 240, 0.88);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--pink);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--pink); }
+        ::-webkit-scrollbar-thumb { background: var(--rose); border-radius: 3px; }
+
+        /* ─── Canvas ─── */
+        #canvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ─── Nav ─── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 900;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.1rem 4rem;
+            background: var(--nav-bg);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(176, 80, 112, 0.12);
+            transition: box-shadow 0.3s;
+        }
+
+        nav.scrolled { box-shadow: 0 2px 24px rgba(176, 80, 112, 0.13); }
+
+        .nav-logo {
+            font-size: 1rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-mid);
+            letter-spacing: 0.03em;
+            transition: color 0.2s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -3px; left: 0;
+            width: 0; height: 1.5px;
+            background: var(--rose);
+            border-radius: 1px;
+            transition: width 0.25s ease;
+        }
+
+        .nav-links a:hover { color: var(--rose); }
+        .nav-links a:hover::after { width: 100%; }
+
+        .nav-resume {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.55rem 1.2rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: white;
+            background: var(--rose);
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.2s;
+            letter-spacing: 0.02em;
+        }
+
+        .nav-resume:hover {
+            background: var(--rose-dark);
+            transform: translateY(-1px);
+        }
+
+        /* ─── Main ─── */
+        main { position: relative; z-index: 1; }
+
+        /* ─── Hero ─── */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 4rem 4rem;
+        }
+
+        .hero-inner {
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .hi-line {
+            display: block;
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            font-weight: 400;
+            color: var(--text-mid);
+            margin-bottom: 0.2rem;
+            letter-spacing: 0.01em;
+        }
+
+        .name-row1 {
+            display: block;
+            line-height: 0.93;
+            margin-bottom: 0.04em;
+        }
+
+        .name-mallika {
+            font-family: 'Inter', sans-serif;
+            font-weight: 900;
+            font-size: clamp(3.5rem, 8.5vw, 8rem);
+            color: var(--text);
+            letter-spacing: -0.03em;
+        }
+
+        .name-laasya {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-weight: 400;
+            font-size: clamp(3.5rem, 8.5vw, 8rem);
+            color: var(--rose);
+            letter-spacing: -0.01em;
+        }
+
+        .name-row2 {
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-weight: 900;
+            font-size: clamp(2.8rem, 7vw, 6.8rem);
+            color: var(--text);
+            letter-spacing: -0.03em;
+            line-height: 0.93;
+        }
+
+        .subtext {
+            margin-top: 1.6rem;
+            font-size: clamp(0.95rem, 1.7vw, 1.25rem);
+            font-weight: 400;
+            color: var(--text-mid);
+            min-height: 2em;
+            display: flex;
+            align-items: center;
+        }
+
+        .cursor-blink {
+            display: inline-block;
+            width: 2px;
+            height: 1.1em;
+            background: var(--rose);
+            margin-left: 3px;
+            vertical-align: text-bottom;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0; }
+        }
+
+        .scroll-hint {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            margin-top: 3.5rem;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--text-mid);
+            opacity: 0.65;
+        }
+
+        .scroll-arrow { animation: bounce 1.6s ease-in-out infinite; }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(6px); }
+        }
+
+        /* ─── Sections ─── */
+        .section-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 5.5rem 4rem;
+        }
+
+        .sec-head { margin-bottom: 3rem; }
+
+        h2.sec-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 900;
+            color: var(--text);
+            letter-spacing: -0.025em;
+            line-height: 1;
+            margin-bottom: 0.8rem;
+        }
+
+        h2.sec-title em {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-weight: 400;
+            color: var(--rose);
+        }
+
+        .sec-line {
+            width: 52px;
+            height: 2.5px;
+            background: linear-gradient(90deg, var(--rose), transparent);
+            border-radius: 2px;
+        }
+
+        /* ─── About ─── */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 3fr 2fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .about-text p {
+            font-size: 1.02rem;
+            line-height: 1.88;
+            color: var(--text-mid);
+            margin-bottom: 1.1rem;
+        }
+
+        .pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.6rem;
+        }
+
+        .pill {
+            padding: 0.28rem 0.85rem;
+            background: rgba(176, 80, 112, 0.1);
+            color: var(--rose-dark);
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        /* Awards within about */
+        .awards-list {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+        }
+
+        .award-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.65rem;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            color: var(--text-mid);
+        }
+
+        .award-badge {
+            flex-shrink: 0;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: white;
+            background: var(--rose);
+            padding: 0.2rem 0.55rem;
+            border-radius: 5px;
+            margin-top: 0.1rem;
+        }
+
+        .about-photo {
+            border-radius: 20px;
+            aspect-ratio: 3/4;
+            background: linear-gradient(135deg, rgba(255,255,255,0.65), rgba(255,200,220,0.25));
+            border: 1.5px solid rgba(176, 80, 112, 0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            color: var(--text-mid);
+            opacity: 0.8;
+            overflow: hidden;
+        }
+
+        .about-photo img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+
+        /* ─── Cards ─── */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(176, 80, 112, 0.14);
+            border-radius: 16px;
+            padding: 1.75rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 14px 42px rgba(176, 80, 112, 0.13);
+            border-color: rgba(176, 80, 112, 0.32);
+        }
+
+        .card-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.13em;
+            color: var(--rose);
+            margin-bottom: 0.55rem;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.28rem;
+            line-height: 1.3;
+        }
+
+        .card-sub {
+            font-size: 0.84rem;
+            color: var(--text-mid);
+            font-style: italic;
+            margin-bottom: 0.75rem;
+        }
+
+        .card-desc {
+            font-size: 0.875rem;
+            line-height: 1.72;
+            color: var(--text-mid);
+        }
+
+        /* ─── Timeline ─── */
+        .timeline {
+            padding-left: 2.5rem;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 4px; top: 8px; bottom: 0;
+            width: 1.5px;
+            background: linear-gradient(to bottom, var(--rose), transparent);
+        }
+
+        .tl-item {
+            position: relative;
+            margin-bottom: 2.8rem;
+        }
+
+        .tl-item:last-child { margin-bottom: 0; }
+
+        .tl-dot {
+            position: absolute;
+            left: -2.4rem;
+            top: 0.35em;
+            width: 11px; height: 11px;
+            border-radius: 50%;
+            background: var(--rose);
+            border: 2.5px solid var(--pink);
+            box-shadow: 0 0 0 2px var(--rose);
+        }
+
+        .tl-date {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--rose);
+            margin-bottom: 0.3rem;
+        }
+
+        .tl-title {
+            font-size: 1.12rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.18rem;
+        }
+
+        .tl-company {
+            font-size: 0.875rem;
+            font-style: italic;
+            color: var(--text-mid);
+            margin-bottom: 0.6rem;
+        }
+
+        .tl-bullets {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .tl-bullets li {
+            font-size: 0.875rem;
+            line-height: 1.7;
+            color: var(--text-mid);
+            padding-left: 1.2rem;
+            position: relative;
+        }
+
+        .tl-bullets li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--rose);
+            font-size: 0.75rem;
+            top: 0.15em;
+        }
+
+        /* ─── Project cards ─── */
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 0.9rem;
+        }
+
+        .tag {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.2rem 0.65rem;
+            background: rgba(176, 80, 112, 0.1);
+            color: var(--rose-dark);
+            border-radius: 999px;
+            letter-spacing: 0.03em;
+        }
+
+        .proj-links {
+            display: flex;
+            gap: 0.65rem;
+            margin-top: 1.1rem;
+        }
+
+        .proj-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 0.38rem 0.85rem;
+            border-radius: 7px;
+            text-decoration: none;
+            transition: all 0.2s;
+            letter-spacing: 0.02em;
+        }
+
+        .proj-link.pri {
+            background: var(--rose);
+            color: white;
+        }
+
+        .proj-link.pri:hover {
+            background: var(--rose-dark);
+            transform: translateY(-1px);
+        }
+
+        .proj-link.sec {
+            background: rgba(176, 80, 112, 0.1);
+            color: var(--rose-dark);
+            border: 1px solid rgba(176, 80, 112, 0.2);
+        }
+
+        .proj-link.sec:hover {
+            background: rgba(176, 80, 112, 0.18);
+            transform: translateY(-1px);
+        }
+
+        /* ─── Contact ─── */
+        .contact-desc {
+            font-size: 1.02rem;
+            line-height: 1.85;
+            color: var(--text-mid);
+            max-width: 580px;
+            margin-bottom: 2rem;
+        }
+
+        .contact-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.85rem 1.75rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            border: 2px solid rgba(176, 80, 112, 0.2);
+            background: rgba(255, 255, 255, 0.55);
+            color: var(--text);
+            transition: all 0.25s ease;
+            backdrop-filter: blur(8px);
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(176, 80, 112, 0.18);
+        }
+
+        .contact-btn.gh:hover { background: #1a0a12; color: white; border-color: #1a0a12; }
+        .contact-btn.em:hover { background: var(--rose); color: white; border-color: var(--rose); }
+        .contact-btn.li:hover { background: #0a66c2; color: white; border-color: #0a66c2; }
+
+        /* ─── Footer ─── */
+        footer {
+            position: relative;
+            z-index: 1;
+            padding: 1.5rem 4rem;
+            border-top: 1px solid rgba(176, 80, 112, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        footer p {
+            font-size: 0.8rem;
+            color: var(--text-mid);
+            opacity: 0.65;
+        }
+
+        /* ─── Scroll animations ─── */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.65s ease, transform 0.65s ease;
+        }
+
+        .fade-up.in { opacity: 1; transform: translateY(0); }
+
+        .fade-up[data-d="1"] { transition-delay: 0.08s; }
+        .fade-up[data-d="2"] { transition-delay: 0.16s; }
+        .fade-up[data-d="3"] { transition-delay: 0.24s; }
+
+        /* ─── Responsive ─── */
+        @media (max-width: 900px) {
+            nav { padding: 1rem 2rem; }
+            .nav-links { gap: 1.5rem; }
+            .section-inner { padding: 4rem 2rem; }
+            #hero { padding: 7rem 2rem 3rem; }
+            .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .about-photo { aspect-ratio: 4/3; max-height: 260px; }
+        }
+
+        @media (max-width: 640px) {
+            nav { padding: 0.9rem 1.5rem; }
+            .nav-links { display: none; }
+            .section-inner { padding: 3rem 1.5rem; }
+            #hero { padding: 6rem 1.5rem 3rem; }
+            .cards-grid { grid-template-columns: 1fr; }
+            .contact-row { flex-direction: column; }
+            footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+
+<!-- ─── NAV ─── -->
+<nav id="nav">
+    <a href="#hero" class="nav-logo">mlr.</a>
+    <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#involvement">Involvement</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="Mallika_Ramachandruni_Resume.pdf" target="_blank" rel="noopener" class="nav-resume">Resume ↗</a>
+</nav>
+
+<main>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+    <div class="hero-inner">
+        <span class="hi-line">Hi, I'm</span>
+        <span class="name-row1">
+            <span class="name-mallika">Mallika&nbsp;</span><span class="name-laasya">Laasya</span>
+        </span>
+        <span class="name-row2">Ramachandruni</span>
+        <p class="subtext">
+            <span id="tw"></span><span class="cursor-blink"></span>
+        </p>
+        <div class="scroll-hint">
+            <span>Scroll to explore</span>
+            <svg class="scroll-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M8 3v10M3 9l5 5 5-5" stroke="#b05070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+    </div>
+</section>
+
+<!-- ─── ABOUT ─── -->
+<section id="about">
+    <div class="section-inner">
+        <div class="sec-head fade-up">
+            <h2 class="sec-title">About <em>me.</em></h2>
+            <div class="sec-line"></div>
+        </div>
+        <div class="about-grid">
+            <div class="about-text fade-up">
+                <p>
+                    I'm a Computer Science &amp; Economics student at the University of Wisconsin–Madison
+                    (B.S., Expected May 2028). I love building things that sit at the intersection of
+                    technology and real-world impact — whether that's an AI health tool, a research platform,
+                    or a smarter way to help students learn.
+                </p>
+                <p>
+                    My work spans full-stack development, AI integrations, and research software. I've built
+                    production React applications used in clinical research, shipped AI-powered tools with
+                    Claude and Groq, and tutored dozens of students through the fundamentals of CS.
+                </p>
+                <p>
+                    Outside of building, I lead campus organizations, organize hackathons, and stay curious
+                    about how technology can be made more human.
+                </p>
+
+                <div class="pills">
+                    <span class="pill">Java</span>
+                    <span class="pill">Python</span>
+                    <span class="pill">TypeScript</span>
+                    <span class="pill">JavaScript</span>
+                    <span class="pill">SQL</span>
+                    <span class="pill">React</span>
+                    <span class="pill">Next.js</span>
+                    <span class="pill">FastAPI</span>
+                    <span class="pill">Node.js</span>
+                    <span class="pill">Tailwind CSS</span>
+                    <span class="pill">scikit-learn</span>
+                    <span class="pill">Docker</span>
+                    <span class="pill">Supabase</span>
+                    <span class="pill">Firebase</span>
+                </div>
+
+                <div class="awards-list">
+                    <div class="award-item">
+                        <span class="award-badge">2nd</span>
+                        <span>BadgerAI Hackathon &mdash; competed among 80+ participants</span>
+                    </div>
+                    <div class="award-item">
+                        <span class="award-badge">3rd</span>
+                        <span>Women in Business &times; Uline Case Competition, UW–Madison (Oct. 2025)</span>
+                    </div>
+                    <div class="award-item">
+                        <span class="award-badge" style="background:var(--rose-dark);">Cert</span>
+                        <span>Java Certificate &amp; Python Certificate &mdash; Certiport (2024)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="about-photo fade-up" data-d="1">
+                <!-- Replace with: <img src="your-photo.jpg" alt="Mallika"> -->
+                <span style="padding:2rem;text-align:center;opacity:0.45;font-size:0.85rem;">
+                    Place your photo here<br>
+                    <code style="font-size:0.75rem;opacity:0.7;">&lt;img src="photo.jpg"&gt;</code>
+                </span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── CAMPUS INVOLVEMENT ─── -->
+<section id="involvement">
+    <div class="section-inner">
+        <div class="sec-head fade-up">
+            <h2 class="sec-title">Campus <em>Involvement.</em></h2>
+            <div class="sec-line"></div>
+        </div>
+        <div class="cards-grid">
+            <div class="card fade-up">
+                <div class="card-label">Leadership</div>
+                <div class="card-title">Women in Business Technology (WIBT)</div>
+                <div class="card-sub">VP of Systems · Jan. 2026 – Present</div>
+                <div class="card-desc">Elected VP of Systems for Fall 2026. Manage the website for a 100+ member organization, shipping 10+ updates per semester and connecting members with 20+ industry professionals.</div>
+            </div>
+            <div class="card fade-up" data-d="1">
+                <div class="card-label">Activities</div>
+                <div class="card-title">WACM</div>
+                <div class="card-sub">Undergraduate Activities Chair · Feb. 2026 – Present</div>
+                <div class="card-desc">Selected as Undergraduate Activities Chair for Fall 2026. Organize monthly events for 50+ members featuring engineers from Google, Microsoft, and other top tech companies.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── EXPERIENCE ─── -->
+<section id="experience">
+    <div class="section-inner">
+        <div class="sec-head fade-up">
+            <h2 class="sec-title">Experience<em>.</em></h2>
+            <div class="sec-line"></div>
+        </div>
+        <div class="timeline fade-up">
+
+            <div class="tl-item">
+                <div class="tl-dot"></div>
+                <div class="tl-date">Jan. 2026 – Present</div>
+                <div class="tl-title">Research Assistant</div>
+                <div class="tl-company">Pain Context Innovation Lab · UW–Madison (PI: Dr. Shinye Kim)</div>
+                <ul class="tl-bullets">
+                    <li>Engineered the clinic navigation module of a patient-facing web platform, reducing average time-to-clinic-match by an estimated 40%</li>
+                    <li>Integrated the NPPES NPI REST API to surface and filter 1M+ clinician records, enabling patients to find pain specialists by insurance, specialty, and location</li>
+                    <li>Built dynamic filtering and search UI in React, cutting average user lookup time from 5+ minutes to under 60 seconds in internal testing</li>
+                    <li>Collaborated with a 5-person cross-functional team in weekly sprints using GitHub for version control and code review</li>
+                </ul>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-dot"></div>
+                <div class="tl-date">Aug. 2026 – Present</div>
+                <div class="tl-title">CS Tutor</div>
+                <div class="tl-company">Undergraduate Learning Center · UW–Madison</div>
+                <ul class="tl-bullets">
+                    <li>Tutor 10+ students per week in CS 200/300, covering Java fundamentals, data structures (ArrayLists, HashMaps), and time complexity analysis</li>
+                    <li>Design supplemental problem sets targeting common misconceptions in OOP inheritance and recursion, improving average section quiz scores by ~15%</li>
+                    <li>Hold office hours and one-on-one sessions, maintaining a 4.9/5.0 student satisfaction rating across 50+ tutoring sessions</li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ─── PROJECTS ─── -->
+<section id="projects">
+    <div class="section-inner">
+        <div class="sec-head fade-up">
+            <h2 class="sec-title">Projects<em>.</em></h2>
+            <div class="sec-line"></div>
+        </div>
+        <div class="cards-grid">
+
+            <div class="card fade-up">
+                <div class="card-label">AI · Health Tech · April 2026</div>
+                <div class="card-title">VitalLens</div>
+                <div class="card-desc">
+                    Full-stack AI health companion that parses uploaded lab report PDFs, extracts 20+ biomarker types,
+                    and translates clinical jargon into plain-English summaries using Claude Sonnet 4.6. Features a
+                    longitudinal trend dashboard and generates personalized doctor prep questions — cutting prep time
+                    from 30+ min to under 5 min.
+                </div>
+                <div class="tags">
+                    <span class="tag">React</span>
+                    <span class="tag">TypeScript</span>
+                    <span class="tag">Supabase</span>
+                    <span class="tag">Claude Sonnet 4.6</span>
+                    <span class="tag">Recharts</span>
+                </div>
+                <div class="proj-links">
+                    <!-- Replace # with your actual GitHub repo URL -->
+                    <a href="#" class="proj-link pri">GitHub ↗</a>
+                </div>
+            </div>
+
+            <div class="card fade-up" data-d="1">
+                <div class="card-label">AI · Dev Tools · June 2026</div>
+                <div class="card-title">Vocalis</div>
+                <div class="card-desc">
+                    AI-powered mock interview platform generating role-specific technical and behavioral questions
+                    via Groq-hosted LLMs. Implements voice-to-text transcription with OpenAI Whisper (&lt;2s latency)
+                    and a scikit-learn scoring model evaluating answers across 4 dimensions, delivering actionable
+                    feedback in under 3 seconds.
+                </div>
+                <div class="tags">
+                    <span class="tag">Next.js</span>
+                    <span class="tag">TypeScript</span>
+                    <span class="tag">FastAPI</span>
+                    <span class="tag">Groq</span>
+                    <span class="tag">Whisper</span>
+                    <span class="tag">Docker</span>
+                    <span class="tag">Firebase</span>
+                </div>
+                <div class="proj-links">
+                    <!-- Replace # with your actual GitHub repo URL -->
+                    <a href="#" class="proj-link pri">GitHub ↗</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ─── CONTACT ─── -->
+<section id="contact">
+    <div class="section-inner">
+        <div class="sec-head fade-up">
+            <h2 class="sec-title">Get in <em>touch.</em></h2>
+            <div class="sec-line"></div>
+        </div>
+        <p class="contact-desc fade-up">
+            I'm always open to chatting about research, internships, projects, or just something interesting.
+            Feel free to reach out — I'd love to connect.
+        </p>
+        <div class="contact-row fade-up" data-d="1">
+            <!-- Replace YOUR_USERNAME with your actual GitHub username -->
+            <a href="https://github.com/YOUR_USERNAME" target="_blank" rel="noopener" class="contact-btn gh">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+                </svg>
+                GitHub
+            </a>
+            <a href="mailto:ramachandruniml@gmail.com" class="contact-btn em">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2"/>
+                    <path d="m22 7-10 7L2 7"/>
+                </svg>
+                Email
+            </a>
+            <!-- Replace YOUR_USERNAME with your LinkedIn username -->
+            <a href="https://linkedin.com/in/YOUR_USERNAME" target="_blank" rel="noopener" class="contact-btn li">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+                LinkedIn
+            </a>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    <p>Designed &amp; built by Mallika Laasya Ramachandruni</p>
+    <p>2025</p>
+</footer>
+
+<script>
+// ════════════════════════════════════════════════
+// PARTICLE CANVAS — faster on mouse presence
+// ════════════════════════════════════════════════
+(function () {
+    const canvas = document.getElementById('canvas');
+    const ctx    = canvas.getContext('2d');
+
+    let W = 0, H = 0;
+    const mouse = { x: -9999, y: -9999, active: false };
+
+    const COUNT      = 85;
+    const LINK       = 145;
+    const PULL       = 200;
+    const COLOR      = '176, 80, 112';
+
+    // Speed params — two modes
+    const BASE_DAMP  = 0.972;   // idle
+    const FAST_DAMP  = 0.991;   // mouse on page (less friction → builds speed)
+    const BASE_FORCE = 0.022;   // idle pull
+    const FAST_FORCE = 0.09;    // mouse on page pull (4× stronger)
+
+    class Dot {
+        constructor() {
+            this.x  = Math.random() * W;
+            this.y  = Math.random() * H;
+            this.vx = (Math.random() - 0.5) * 0.5;
+            this.vy = (Math.random() - 0.5) * 0.5;
+            this.r  = Math.random() * 1.8 + 0.9;
+        }
+
+        update() {
+            const fast  = mouse.active;
+            const damp  = fast ? FAST_DAMP  : BASE_DAMP;
+            const force = fast ? FAST_FORCE : BASE_FORCE;
+
+            const dx = mouse.x - this.x;
+            const dy = mouse.y - this.y;
+            const d  = Math.hypot(dx, dy);
+
+            if (d < PULL && d > 0) {
+                const f = (PULL - d) / PULL;
+                this.vx += (dx / d) * f * force;
+                this.vy += (dy / d) * f * force;
+            }
+
+            this.vx *= damp;
+            this.vy *= damp;
+            this.x  += this.vx;
+            this.y  += this.vy;
+
+            if (this.x < 0) this.x = W;
+            if (this.x > W) this.x = 0;
+            if (this.y < 0) this.y = H;
+            if (this.y > H) this.y = 0;
+        }
+
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${COLOR}, 0.5)`;
+            ctx.fill();
+        }
+    }
+
+    let dots = [];
+
+    function resize() {
+        W = canvas.width  = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+    }
+
+    function init() {
+        resize();
+        dots = Array.from({ length: COUNT }, () => new Dot());
+    }
+
+    function frame() {
+        ctx.clearRect(0, 0, W, H);
+
+        for (let i = 0; i < dots.length; i++) {
+            for (let j = i + 1; j < dots.length; j++) {
+                const dx = dots[i].x - dots[j].x;
+                const dy = dots[i].y - dots[j].y;
+                const d  = Math.hypot(dx, dy);
+                if (d < LINK) {
+                    ctx.beginPath();
+                    ctx.moveTo(dots[i].x, dots[i].y);
+                    ctx.lineTo(dots[j].x, dots[j].y);
+                    ctx.strokeStyle = `rgba(${COLOR}, ${(1 - d / LINK) * 0.22})`;
+                    ctx.lineWidth = 0.75;
+                    ctx.stroke();
+                }
+            }
+            dots[i].update();
+            dots[i].draw();
+        }
+
+        requestAnimationFrame(frame);
+    }
+
+    window.addEventListener('resize', () => {
+        resize();
+        dots.forEach(d => {
+            if (d.x > W) d.x = Math.random() * W;
+            if (d.y > H) d.y = Math.random() * H;
+        });
+    });
+
+    window.addEventListener('mousemove', e => {
+        mouse.x      = e.clientX;
+        mouse.y      = e.clientY;
+        mouse.active = true;
+    });
+
+    window.addEventListener('mouseleave', () => {
+        mouse.x      = -9999;
+        mouse.y      = -9999;
+        mouse.active = false;
+    });
+
+    init();
+    frame();
+})();
+
+// ════════════════════════════════════════════════
+// TYPEWRITER
+// ════════════════════════════════════════════════
+(function () {
+    const el   = document.getElementById('tw');
+    const text = 'Computer Science and Economics Student @ UW–Madison';
+    let i = 0;
+
+    function type() {
+        el.textContent = text.slice(0, i);
+        if (i < text.length) {
+            i++;
+            setTimeout(type, i === 1 ? 900 : 52 + Math.random() * 38);
+        }
+    }
+
+    setTimeout(type, 700);
+})();
+
+// ════════════════════════════════════════════════
+// NAV SHADOW ON SCROLL
+// ════════════════════════════════════════════════
+(function () {
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+        nav.classList.toggle('scrolled', window.scrollY > 30);
+    }, { passive: true });
+})();
+
+// ════════════════════════════════════════════════
+// SCROLL FADE-IN
+// ════════════════════════════════════════════════
+(function () {
+    const els = document.querySelectorAll('.fade-up');
+    const io  = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('in');
+                io.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.1 });
+    els.forEach(el => io.observe(el));
+})();
+</script>
+
+</body>
+</html>
