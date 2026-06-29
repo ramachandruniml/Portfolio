@@ -100,6 +100,9 @@
         .nav-links a:hover { color: var(--rose); }
         .nav-links a:hover::after { width: 100%; }
 
+        .nav-links a.active { color: var(--rose); }
+        .nav-links a.active::after { width: 100%; }
+
         .nav-resume {
             display: inline-flex;
             align-items: center;
@@ -918,7 +921,7 @@
 
 <footer>
     <p>Designed &amp; built by Mallika Laasya Ramachandruni</p>
-    <p>2025</p>
+    <p>2026</p>
 </footer>
 
 <script>
@@ -1089,6 +1092,32 @@
         });
     }, { threshold: 0.1 });
     els.forEach(el => io.observe(el));
+})();
+
+// ════════════════════════════════════════════════
+// NAV SCROLL SPY
+// ════════════════════════════════════════════════
+(function () {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    function updateActive() {
+        const scrollY = window.scrollY;
+        let current = '';
+
+        sections.forEach(section => {
+            if (scrollY >= section.offsetTop - 140) {
+                current = section.id;
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+        });
+    }
+
+    window.addEventListener('scroll', updateActive, { passive: true });
+    updateActive();
 })();
 </script>
 
