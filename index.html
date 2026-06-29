@@ -700,7 +700,7 @@
                 <div class="awards-list">
                     <div class="award-item">
                         <span class="award-badge">2nd</span>
-                        <span>BadgerAI Hackathon &mdash; competed among 80+ participants</span>
+                        <span>BadgerAI Hackathon &mdash; competed among 80+ participants (April 2026)</span>
                     </div>
                     <div class="award-item">
                         <span class="award-badge">3rd</span>
@@ -937,8 +937,8 @@
     const COLOR      = '176, 80, 112';
 
     // Speed params — two modes
-    const BASE_DAMP  = 0.972;   // idle
-    const FAST_DAMP  = 0.991;   // mouse on page (less friction → builds speed)
+    const BASE_DAMP  = 0.900;   // idle
+    const FAST_DAMP  = 0.970;   // mouse on page (less friction → builds speed)
     const BASE_FORCE = 0.022;   // idle pull
     const FAST_FORCE = 0.09;    // mouse on page pull (4× stronger)
 
@@ -946,8 +946,8 @@
         constructor() {
             this.x  = Math.random() * W;
             this.y  = Math.random() * H;
-            this.vx = (Math.random() - 0.5) * 0.5;
-            this.vy = (Math.random() - 0.5) * 0.5;
+            this.vx = (Math.random() - 0.5) * 0.05;
+            this.vy = (Math.random() - 0.5) * 0.05;
             this.r  = Math.random() * 1.8 + 0.9;
         }
 
