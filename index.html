@@ -13,14 +13,17 @@
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-            --pink:      #fce8f0;
+            --pink:      #fdf3f8;
             --rose:      #b05070;
             --rose-dark: #7a3050;
             --text:      #1a0a12;
             --text-mid:  #6b3050;
             --card-bg:   rgba(255, 255, 255, 0.6);
-            --nav-bg:    rgba(252, 232, 240, 0.82);
+            --nav-bg:    rgba(253, 243, 248, 0.82);
             --mono:      'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+            --grid-line: rgba(176, 80, 112, 0.07);
+            --grid-size: 48px;
 
             --border:        rgba(176, 80, 112, 0.14);
             --border-strong: rgba(176, 80, 112, 0.30);
@@ -43,6 +46,35 @@
                 scroll-behavior: auto !important;
             }
         }
+
+        /* ─── Grid backdrop ─── */
+        .grid-bg {
+            position: fixed;
+            inset: -2px;
+            z-index: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+            background-size: var(--grid-size) var(--grid-size);
+            /* soft vignette so the grid fades at the edges */
+            -webkit-mask: radial-gradient(130% 130% at 50% 40%, #000 55%, transparent 100%);
+                    mask: radial-gradient(130% 130% at 50% 40%, #000 55%, transparent 100%);
+        }
+
+        /* pool of light that follows the cursor and lightens the grid */
+        .grid-glow {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            background: radial-gradient(340px circle at var(--gx, 50%) var(--gy, 50%),
+                        rgba(255, 253, 254, 0.8), rgba(255, 253, 254, 0.28) 42%, transparent 68%);
+        }
+
+        body.cursor-active .grid-glow { opacity: 1; }
 
         /* ─── Film grain ─── */
         .grain {
@@ -108,7 +140,7 @@
         nav.scrolled {
             padding-top: 0.85rem;
             padding-bottom: 0.85rem;
-            background: rgba(252, 232, 240, 0.9);
+            background: rgba(253, 243, 248, 0.9);
             box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset, 0 6px 28px rgba(122, 48, 80, 0.12);
         }
 
@@ -769,7 +801,9 @@
 </head>
 <body>
 
+<div class="grid-bg" aria-hidden="true"></div>
 <canvas id="canvas"></canvas>
+<div class="grid-glow" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
 
 <!-- ─── NAV ─── -->
@@ -1359,6 +1393,28 @@
 
     window.addEventListener('scroll', updateActive, { passive: true });
     updateActive();
+})();
+
+// ════════════════════════════════════════════════
+// GRID LIGHT — cursor pool that lightens the backdrop
+// ════════════════════════════════════════════════
+(function () {
+    const body = document.body;
+    let ticking = false;
+
+    window.addEventListener('pointermove', e => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+            body.style.setProperty('--gx', `${e.clientX}px`);
+            body.style.setProperty('--gy', `${e.clientY}px`);
+            body.classList.add('cursor-active');
+            ticking = false;
+        });
+    }, { passive: true });
+
+    window.addEventListener('pointerleave', () => body.classList.remove('cursor-active'));
+    window.addEventListener('blur',        () => body.classList.remove('cursor-active'));
 })();
 
 // ════════════════════════════════════════════════
