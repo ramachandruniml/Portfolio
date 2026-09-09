@@ -597,6 +597,7 @@
         .card {
             position: relative;
             isolation: isolate;
+            min-width: 0;
             background: var(--card-bg);
             backdrop-filter: blur(14px) saturate(1.4);
             -webkit-backdrop-filter: blur(14px) saturate(1.4);
@@ -802,6 +803,46 @@
             border-color: rgba(176, 80, 112, 0.24);
         }
 
+        /* ─── Link Garden filmstrip ─── */
+        .shot-strip {
+            margin: 0.95rem 0 1.15rem;
+            width: 100%;
+            max-width: 100%;
+            height: 128px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: rgba(176, 80, 112, 0.05);
+            box-shadow: var(--shadow-sm);
+            -webkit-mask: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+                    mask: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+        }
+
+        .shot-track {
+            display: flex;
+            height: 100%;
+            width: max-content;
+            will-change: transform;
+        }
+
+        .shot-track img {
+            height: 100%;
+            width: auto;
+            margin-right: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(122, 48, 80, 0.16);
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+            -webkit-user-drag: none;
+            user-select: none;
+        }
+
+        .shot-track img:hover {
+            transform: scale(1.04);
+            box-shadow: 0 10px 24px rgba(122, 48, 80, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
         .proj-links {
             display: flex;
             gap: 0.65rem;
@@ -953,6 +994,14 @@
             .pills-track .pill[aria-hidden="true"] { display: none; }
             .hero-blob { display: none !important; }
             .scroll-arrow { animation: none !important; }
+
+            .shot-strip {
+                overflow-x: auto;
+                -webkit-mask: none;
+                        mask: none;
+            }
+            .shot-track { transform: none !important; }
+            .shot-track img[aria-hidden="true"] { display: none; }
         }
     </style>
 </head>
@@ -1186,6 +1235,16 @@
             <div class="card fade-up">
                 <div class="card-label">AI · Dev Tools · June 2026</div>
                 <div class="card-title">Vocalis</div>
+                <div class="shot-strip" aria-label="Vocalis screenshots">
+                    <div class="shot-track">
+                        <img src="vocalis/questionnaire.png" alt="Vocalis — interview setup and generated question list" loading="lazy" decoding="async">
+                        <img src="vocalis/recording.png" alt="Vocalis — voice recording during a mock interview" loading="lazy" decoding="async">
+                        <img src="vocalis/sessionReview.png" alt="Vocalis — session review with scored feedback" loading="lazy" decoding="async">
+                        <img src="vocalis/questionnaire.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
+                        <img src="vocalis/recording.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
+                        <img src="vocalis/sessionReview.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
+                    </div>
+                </div>
                 <div class="card-desc">
                     AI-powered mock interview platform generating role-specific technical and behavioral questions
                     via Groq-hosted LLMs. Implements voice-to-text transcription with OpenAI Whisper (&lt;2s latency)
@@ -1210,6 +1269,18 @@
             <div class="card fade-up" data-d="1">
                 <div class="card-label">AI · Health Tech · April 2026</div>
                 <div class="card-title">VitalLens</div>
+                <div class="shot-strip" aria-label="VitalLens screenshots">
+                    <div class="shot-track">
+                        <img src="vitalLens/uploads.png" alt="VitalLens — uploading a lab report PDF" loading="lazy" decoding="async">
+                        <img src="vitalLens/dashboard.png" alt="VitalLens — extracted biomarker dashboard" loading="lazy" decoding="async">
+                        <img src="vitalLens/trends.png" alt="VitalLens — longitudinal biomarker trend charts" loading="lazy" decoding="async">
+                        <img src="vitalLens/docprep.png" alt="VitalLens — generated doctor prep questions" loading="lazy" decoding="async">
+                        <img src="vitalLens/uploads.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
+                        <img src="vitalLens/dashboard.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
+                        <img src="vitalLens/trends.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
+                        <img src="vitalLens/docprep.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
+                    </div>
+                </div>
                 <div class="card-desc">
                     Full-stack AI health companion that parses uploaded lab report PDFs, extracts 20+ biomarker types,
                     and translates clinical jargon into plain-English summaries using Claude Sonnet 4.6. Features a
@@ -1231,6 +1302,18 @@
             <div class="card fade-up" data-d="2">
                 <div class="card-label">Hackathon · Feb. 2026</div>
                 <div class="card-title">Link Garden</div>
+                <div class="shot-strip" aria-label="Link Garden screenshots">
+                    <div class="shot-track">
+                        <img src="linkgarden/garden.png" alt="Link Garden — main garden view with a potted plant for each saved topic" loading="lazy" decoding="async">
+                        <img src="linkgarden/report.png" alt="Link Garden — AI personality report generated from saved links" loading="lazy" decoding="async">
+                        <img src="linkgarden/links.png" alt="Link Garden — saved links shown as cards in the Shopping category" loading="lazy" decoding="async">
+                        <img src="linkgarden/login.png" alt="Link Garden — sign in screen" loading="lazy" decoding="async">
+                        <img src="linkgarden/garden.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
+                        <img src="linkgarden/report.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
+                        <img src="linkgarden/links.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
+                        <img src="linkgarden/login.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
+                    </div>
+                </div>
                 <div class="card-desc">
                     CheeseHacks 2026 submission (2-person team). A link categorizing website that uses AI to generate a
                     personalized personality report based on the links you save. Implements Firebase authentication
@@ -1693,6 +1776,56 @@
             card.style.setProperty('--ry', '0deg');
         });
     });
+})();
+
+// ════════════════════════════════════════════════
+// PROJECT FILMSTRIPS — idle drift + scroll-reactive pan
+// adjacent strips drift opposite ways for contrast
+// ════════════════════════════════════════════════
+(function () {
+    const strips = document.querySelectorAll('.shot-strip');
+    if (!strips.length) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const BASE = 0.32;                           // px/frame idle drift
+    let lastScroll = window.scrollY;
+    let kick = 0;
+
+    window.addEventListener('scroll', () => {
+        const dy = window.scrollY - lastScroll;
+        lastScroll = window.scrollY;
+        kick += dy * 0.28;                       // page scroll shoves every strip
+        kick = Math.max(-16, Math.min(16, kick));
+    }, { passive: true });
+
+    const items = [...strips].map((strip, i) => {
+        const track = strip.querySelector('.shot-track');
+        const s = { track, dir: i % 2 === 0 ? 1 : -1, offset: 0, half: 0, hovering: false };
+        const measure = () => { s.half = track.scrollWidth / 2; };
+        measure();
+        window.addEventListener('resize', measure, { passive: true });
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+        track.querySelectorAll('img').forEach(img => {
+            if (!img.complete) img.addEventListener('load', measure, { once: true });
+        });
+        strip.addEventListener('pointerenter', () => s.hovering = true);
+        strip.addEventListener('pointerleave', () => s.hovering = false);
+        return s;
+    });
+
+    function frame() {
+        for (const s of items) {
+            s.offset += (s.hovering ? 0 : BASE * s.dir) + kick;
+            if (s.half > 0) {
+                s.offset %= s.half;
+                if (s.offset < 0) s.offset += s.half;
+            }
+            s.track.style.transform = `translate3d(${-s.offset}px, 0, 0)`;
+        }
+        kick *= 0.9;                             // ease the shove back to idle drift
+        requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
 })();
 
 // ════════════════════════════════════════════════
