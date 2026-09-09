@@ -7,23 +7,29 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@1,300;1,400;1,500;1,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@1,300;1,400;1,500;1,600&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-            --pink:      #fdf3f8;
+            /* base surface — warm "journal paper" (was a flat pink) */
+            --paper:     #f7f3e9;
             --rose:      #b05070;
             --rose-dark: #7a3050;
             --text:      #1a0a12;
             --text-mid:  #6b3050;
-            --card-bg:   rgba(255, 255, 255, 0.6);
-            --nav-bg:    rgba(253, 243, 248, 0.82);
+            --card-bg:   rgba(255, 254, 250, 0.9);
+            --nav-bg:    rgba(247, 243, 233, 0.82);
             --mono:      'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
-            --grid-line: rgba(176, 80, 112, 0.07);
-            --grid-size: 48px;
+            /* field-notes motif — adjust these two to retune the whole treatment */
+            --ink:        #3a5a40;               /* deep forest-green accent, field-notes only */
+            --ink-rgb:    58, 90, 64;
+            --font-stamp: 'Space Mono', 'IBM Plex Mono', ui-monospace, monospace;
+
+            /* dark-mode values for later (site has no dark theme yet):
+               --paper: #14171a;  --ink: #8fb89a;  --ink-rgb: 143, 184, 154; */
 
             --border:        rgba(176, 80, 112, 0.14);
             --border-strong: rgba(176, 80, 112, 0.30);
@@ -36,6 +42,7 @@
         html {
             scroll-behavior: smooth;
             scroll-padding-top: 92px;
+            background-color: var(--paper);
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -45,47 +52,6 @@
                 transition-duration: 0.01ms !important;
                 scroll-behavior: auto !important;
             }
-        }
-
-        /* ─── Grid backdrop ─── */
-        .grid-bg {
-            position: fixed;
-            inset: -2px;
-            z-index: 0;
-            pointer-events: none;
-            background-image:
-                linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
-                linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
-            background-size: var(--grid-size) var(--grid-size);
-            /* soft vignette so the grid fades at the edges */
-            -webkit-mask: radial-gradient(130% 130% at 50% 40%, #000 55%, transparent 100%);
-                    mask: radial-gradient(130% 130% at 50% 40%, #000 55%, transparent 100%);
-        }
-
-        /* pool of light that follows the cursor and lightens the grid */
-        .grid-glow {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            background: radial-gradient(340px circle at var(--gx, 50%) var(--gy, 50%),
-                        rgba(255, 253, 254, 0.8), rgba(255, 253, 254, 0.28) 42%, transparent 68%);
-        }
-
-        body.cursor-active .grid-glow { opacity: 1; }
-
-        /* ─── Film grain ─── */
-        .grain {
-            position: fixed;
-            inset: 0;
-            z-index: 2;
-            pointer-events: none;
-            opacity: 0.4;
-            mix-blend-mode: soft-light;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-            background-size: 140px 140px;
         }
 
         /* ─── Scroll progress ─── */
@@ -126,13 +92,22 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--pink);
             color: var(--text);
             overflow-x: hidden;
+
+            /* journal-paper surface: warm cream + faint topographic contours + fine grain.
+               Both layers are seamless CSS-generated tiles (no raster, no fixed layer). */
+            background-color: var(--paper);
+            background-image:
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'%3E%3Cg fill='none' stroke='%237a6a52' stroke-opacity='0.07'%3E%3Cpath d='M0 25 C37.5 14 112.5 14 150 25 C187.5 36 262.5 36 300 25'/%3E%3Cpath d='M0 75 C37.5 83 112.5 83 150 75 C187.5 67 262.5 67 300 75'/%3E%3Cpath d='M0 125 C37.5 112 112.5 112 150 125 C187.5 138 262.5 138 300 125'/%3E%3Cpath d='M0 175 C37.5 184 112.5 184 150 175 C187.5 166 262.5 166 300 175'/%3E%3C/g%3E%3C/svg%3E"),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='0.028'/%3E%3C/svg%3E");
+            background-repeat: repeat, repeat;
+            background-size: 300px 200px, 120px 120px;
+            background-position: 0 0, 0 0;
         }
 
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--pink); }
+        ::-webkit-scrollbar-track { background: var(--paper); }
         ::-webkit-scrollbar-thumb {
             background: linear-gradient(var(--rose), var(--rose-dark));
             border-radius: 3px;
@@ -145,16 +120,6 @@
             outline: 2px solid var(--rose);
             outline-offset: 3px;
             border-radius: 4px;
-        }
-
-        /* ─── Canvas ─── */
-        #canvas {
-            position: fixed;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
         }
 
         /* ─── Nav ─── */
@@ -176,7 +141,7 @@
         nav.scrolled {
             padding-top: 0.85rem;
             padding-bottom: 0.85rem;
-            background: rgba(253, 243, 248, 0.9);
+            background: rgba(247, 243, 233, 0.92);
             box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset, 0 6px 28px rgba(122, 48, 80, 0.12);
         }
 
@@ -721,7 +686,7 @@
             width: 11px; height: 11px;
             border-radius: 50%;
             background: var(--rose);
-            border: 2.5px solid var(--pink);
+            border: 2.5px solid var(--paper);
             box-shadow: 0 0 0 2px var(--rose), 0 0 0 7px rgba(176, 80, 112, 0.12);
         }
 
@@ -910,7 +875,7 @@
             font-weight: 600;
             text-decoration: none;
             border: 1.5px solid rgba(176, 80, 112, 0.2);
-            background: rgba(255, 255, 255, 0.55);
+            background: rgba(255, 254, 250, 0.88);
             color: var(--text);
             transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
             backdrop-filter: blur(8px);
@@ -959,11 +924,108 @@
         .fade-up[data-d="3"] { transition-delay: 0.3s; }
         .fade-up[data-d="4"] { transition-delay: 0.4s; }
 
+        /* ═══════════════ FIELD-NOTES MOTIF ═══════════════ */
+
+        /* Section dividers: dashed rule + coordinate marker */
+        .field-divider {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 4rem;
+            display: flex;
+            align-items: center;
+            gap: 1.1rem;
+        }
+
+        .fd-line {
+            flex: 1;
+            height: 0;
+            border-top: 1px dashed rgba(var(--ink-rgb), 0.4);
+        }
+
+        .fd-mark {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            font-family: var(--font-stamp);
+            font-size: 0.62rem;
+            letter-spacing: 0.14em;
+            color: var(--ink);
+            white-space: nowrap;
+        }
+
+        .fd-mark svg { flex-shrink: 0; }
+
+        /* Logbook stamp — Experience entry tags + logbook cards */
+        .log-stamp {
+            display: inline-block;
+            font-family: var(--font-stamp);
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.13em;
+            text-transform: uppercase;
+            color: var(--ink);
+            background: rgba(var(--ink-rgb), 0.05);
+            border: 1px dashed rgba(var(--ink-rgb), 0.5);
+            border-radius: 3px;
+            padding: 0.22rem 0.55rem;
+            transform: rotate(-1.1deg);
+        }
+
+        .exp-stamp { margin-bottom: 0.7rem; }
+
+        /* Explorations logbook — adventure + technical entries, identical template */
+        .logbook {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .log-card {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.85rem;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            border: 1px dashed rgba(var(--ink-rgb), 0.55);
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .log-icon {
+            width: 40px;
+            height: 40px;
+            display: grid;
+            place-items: center;
+            border-radius: 9px;
+            color: var(--ink);
+            background: rgba(var(--ink-rgb), 0.08);
+        }
+
+        .log-icon svg { width: 22px; height: 22px; }
+
+        .log-entry {
+            font-size: 0.9rem;
+            line-height: 1.72;
+            color: var(--text-mid);
+        }
+
+        .log-entry a {
+            color: var(--ink);
+            font-weight: 600;
+            text-decoration: none;
+            white-space: nowrap;
+            border-bottom: 1px solid rgba(var(--ink-rgb), 0.4);
+        }
+
+        .log-entry a:hover { border-bottom-color: var(--ink); }
+
         /* ─── Responsive ─── */
         @media (max-width: 900px) {
             nav { padding: 1rem 2rem; }
             .nav-links { gap: 1.5rem; }
             .section-inner { padding: 4rem 2rem; }
+            .field-divider { padding: 0 2rem; }
             #hero { padding: 7rem 2rem 3rem; }
             .about-grid { grid-template-columns: 1fr; gap: 2rem; }
             .about-photo { aspect-ratio: 4/3; max-height: 260px; }
@@ -973,8 +1035,10 @@
             nav { padding: 0.9rem 1.5rem; }
             .nav-links { display: none; }
             .section-inner { padding: 3rem 1.5rem; }
+            .field-divider { padding: 0 1.5rem; gap: 0.8rem; }
             #hero { padding: 6rem 1.5rem 3rem; }
             .cards-grid { grid-template-columns: 1fr; }
+            .logbook { grid-template-columns: 1fr; }
             .contact-row { flex-direction: column; }
             footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
         }
@@ -1007,10 +1071,6 @@
 </head>
 <body>
 
-<div class="grid-bg" aria-hidden="true"></div>
-<canvas id="canvas"></canvas>
-<div class="grid-glow" aria-hidden="true"></div>
-<div class="grain" aria-hidden="true"></div>
 <div class="scroll-progress" aria-hidden="true"><span></span></div>
 
 <!-- ─── NAV ─── -->
@@ -1052,6 +1112,12 @@
         </div>
     </div>
 </section>
+
+<div class="field-divider" aria-hidden="true">
+    <span class="fd-line"></span>
+    <span class="fd-mark"><svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.1"><circle cx="6" cy="6" r="3"/><path d="M6 .5v2M6 9.5v2M.5 6h2M9.5 6h2"/></svg>43.07° N</span>
+    <span class="fd-line"></span>
+</div>
 
 <!-- ─── ABOUT ─── -->
 <section id="about">
@@ -1130,6 +1196,12 @@
     </div>
 </section>
 
+<div class="field-divider" aria-hidden="true">
+    <span class="fd-line"></span>
+    <span class="fd-mark"><svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.1"><circle cx="6" cy="6" r="3"/><path d="M6 .5v2M6 9.5v2M.5 6h2M9.5 6h2"/></svg>89.40° W</span>
+    <span class="fd-line"></span>
+</div>
+
 <!-- ─── CAMPUS INVOLVEMENT ─── -->
 <section id="involvement">
     <div class="section-inner">
@@ -1160,6 +1232,12 @@
     </div>
 </section>
 
+<div class="field-divider" aria-hidden="true">
+    <span class="fd-line"></span>
+    <span class="fd-mark"><svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.1"><circle cx="6" cy="6" r="3"/><path d="M6 .5v2M6 9.5v2M.5 6h2M9.5 6h2"/></svg>40.10° N</span>
+    <span class="fd-line"></span>
+</div>
+
 <!-- ─── EXPERIENCE ─── -->
 <section id="experience">
     <div class="section-inner">
@@ -1171,6 +1249,7 @@
 
             <div class="tl-item fade-up">
                 <div class="tl-dot"></div>
+                <div class="log-stamp exp-stamp">ENTRY 01 — JUL 2025</div>
                 <div class="tl-date">Jul. 2025 – Aug. 2025</div>
                 <div class="tl-title">Scholar</div>
                 <div class="tl-company">Kode With Klossy</div>
@@ -1183,6 +1262,7 @@
 
             <div class="tl-item fade-up" data-d="1">
                 <div class="tl-dot"></div>
+                <div class="log-stamp exp-stamp">ENTRY 02 — JAN 2026</div>
                 <div class="tl-date">Jan. 2026 – Present</div>
                 <div class="tl-title">Research Assistant</div>
                 <div class="tl-company">Pain Context Innovation Lab · UW–Madison (PI: Dr. Shinye Kim)</div>
@@ -1196,6 +1276,7 @@
 
             <div class="tl-item fade-up" data-d="2">
                 <div class="tl-dot"></div>
+                <div class="log-stamp exp-stamp">ENTRY 03 — MAY 2026</div>
                 <div class="tl-date">May 2026 – Present · Remote</div>
                 <div class="tl-title">Student Engineer</div>
                 <div class="tl-company">Develop for Good · The Forge Nashville</div>
@@ -1209,6 +1290,7 @@
 
             <div class="tl-item fade-up" data-d="3">
                 <div class="tl-dot"></div>
+                <div class="log-stamp exp-stamp">ENTRY 04 — AUG 2026</div>
                 <div class="tl-date">Aug. 2026 – Present</div>
                 <div class="tl-title">Computer Science Tutor</div>
                 <div class="tl-company">Undergraduate Learning Center · UW–Madison</div>
@@ -1222,6 +1304,12 @@
         </div>
     </div>
 </section>
+
+<div class="field-divider" aria-hidden="true">
+    <span class="fd-line"></span>
+    <span class="fd-mark"><svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.1"><circle cx="6" cy="6" r="3"/><path d="M6 .5v2M6 9.5v2M.5 6h2M9.5 6h2"/></svg>39.59° N</span>
+    <span class="fd-line"></span>
+</div>
 
 <!-- ─── PROJECTS ─── -->
 <section id="projects">
@@ -1335,86 +1423,78 @@
     </div>
 </section>
 
+<div class="field-divider" aria-hidden="true">
+    <span class="fd-line"></span>
+    <span class="fd-mark"><svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.1"><circle cx="6" cy="6" r="3"/><path d="M6 .5v2M6 9.5v2M.5 6h2M9.5 6h2"/></svg>34.59° S</span>
+    <span class="fd-line"></span>
+</div>
+
 <!-- ─── EXPLORATIONS ─── -->
 <section id="explorations">
     <div class="section-inner">
         <div class="sec-head fade-up">
-            <h2 class="sec-title">In the works<em>.</em></h2>
+            <h2 class="sec-title">Field <em>notes.</em></h2>
             <div class="sec-line"></div>
         </div>
-        <div class="cards-grid">
+        <div class="logbook">
 
-            <div class="card fade-up">
-                <div class="card-label">Computer Vision · Privacy</div>
-                <div class="card-title">Obscura</div>
-                <div class="card-desc">
-                    A face detection and redaction tool that automatically finds and obscures faces in images
-                    and videos, so footage can be shared without exposing bystanders. It offers blur, pixelate,
-                    and black-box redaction styles, and keeps face tracking stable across video frames with
-                    ByteTrack. It is not face recognition — no identity matching, no embeddings, no stored
-                    frames — and uploads auto-delete after a configurable timeout while the worker makes no
-                    outbound network calls during processing.
-                </div>
-                <div class="tags">
-                    <span class="tag">Python</span>
-                    <span class="tag">FastAPI</span>
-                    <span class="tag">Celery</span>
-                    <span class="tag">React</span>
-                    <span class="tag">RetinaFace</span>
-                    <span class="tag">YOLOv8</span>
-                    <span class="tag">FFmpeg</span>
-                    <span class="tag">Docker</span>
-                </div>
-                <div class="proj-links">
-                    <a href="https://github.com/ramachandruniml/Obscura" target="_blank" rel="noopener" class="proj-link pri">GitHub ↗&#xFE0E;</a>
-                </div>
-            </div>
+            <article class="log-card fade-up">
+                <div class="log-stamp">LOG — GANSBAAI</div>
+                <div class="log-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17C8 6 13 4 19 5c-1 7-5 11-14 12Z"/><path d="M3 20c4 1.5 10 1.5 15-1"/></svg></div>
+                <p class="log-entry">Dropped into the cage off Gansbaai at first light. Counted the nicks on a great white's dorsal fin as it slid past the bars.</p>
+            </article>
 
-            <div class="card fade-up" data-d="1">
-                <div class="card-label">Full-Stack · Optimization</div>
-                <div class="card-title">Munchmap</div>
-                <div class="card-desc">
-                    A full-stack meal planning app for college students on a budget. Rather than just listing
-                    recipes, it models weekly meal planning as a constraint satisfaction problem: given a
-                    student's grocery budget, dietary restrictions, allergies, dorm equipment (microwave-only
-                    vs. full kitchen), and nutrition goals, a Google OR-Tools CP-SAT solver picks a full week of
-                    meals that stays under budget, hits calorie/macro targets, and minimizes the number of
-                    distinct ingredients purchased by favoring recipes that share ingredients — then generates
-                    a consolidated, itemized grocery list. Seeded with real recipe data from Kaggle's Food.com
-                    dataset.
-                </div>
-                <div class="tags">
-                    <span class="tag">Next.js</span>
-                    <span class="tag">TypeScript</span>
-                    <span class="tag">FastAPI</span>
-                    <span class="tag">SQLAlchemy</span>
-                    <span class="tag">OR-Tools</span>
-                    <span class="tag">Supabase</span>
-                </div>
-                <div class="proj-links">
-                    <a href="https://github.com/ramachandruniml/Munchmap" target="_blank" rel="noopener" class="proj-link pri">GitHub ↗&#xFE0E;</a>
-                </div>
-            </div>
+            <article class="log-card fade-up" data-d="1">
+                <div class="log-stamp">LOG — OBSCURA</div>
+                <div class="log-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.8-7 10-7 10 7 10 7-3.8 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></div>
+                <p class="log-entry">Building a face-detection tool that blurs, pixelates, or blacks out bystanders in footage — tracking stays locked across frames with ByteTrack, and nothing is recognized or stored. <a href="https://github.com/ramachandruniml/Obscura" target="_blank" rel="noopener">GitHub ↗</a></p>
+            </article>
 
-            <div class="card fade-up" data-d="2">
-                <div class="card-label">NLP · Legal Tech</div>
-                <div class="card-title">Legal Document Parser</div>
-                <div class="card-desc">
-                    A tool for parsing and extracting structured information from legal documents.
-                    Explores natural language processing techniques to make dense legal text more
-                    accessible and machine-readable.
-                </div>
-                <div class="tags">
-                    <span class="tag">Python</span>
-                </div>
-                <div class="proj-links">
-                    <a href="https://github.com/ramachandruniml/legalDocumentParser" target="_blank" rel="noopener" class="proj-link pri">GitHub ↗&#xFE0E;</a>
-                </div>
-            </div>
+            <article class="log-card fade-up" data-d="2">
+                <div class="log-stamp">LOG — MOUNT EVANS</div>
+                <div class="log-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20 10 6l4 7 2.5-3.5L21 20Z"/><path d="M8 13l2-1.6 1.6 1.6"/></svg></div>
+                <p class="log-entry">Drove the highest paved road in North America — 14,130 ft on Mount Evans. Thin air, no guardrails, marmots entirely unbothered.</p>
+            </article>
+
+            <article class="log-card fade-up" data-d="3">
+                <div class="log-stamp">LOG — MUNCHMAP</div>
+                <div class="log-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-8"/><path d="M12 14c-3.5 0-6-2.2-6-6 4 0 6 2.2 6 6Z"/><path d="M12 13c3.2 0 5.5-2 5.5-5.5C14 7.5 12 9.5 12 13Z"/></svg></div>
+                <p class="log-entry">A meal planner that treats a week of eating as a constraint problem: an OR-Tools solver picks recipes that hit macros, stay under budget, and reuse ingredients. <a href="https://github.com/ramachandruniml/Munchmap" target="_blank" rel="noopener">GitHub ↗</a></p>
+            </article>
+
+            <article class="log-card fade-up" data-d="4">
+                <div class="log-stamp">LOG — KAIKOURA</div>
+                <div class="log-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15c3.5 0 4-9 9-9s5.5 9 9 9"/><path d="M3 19c1.8.9 3.6.9 5.4 0s3.6-.9 5.4 0 3.6.9 5.2 0"/></svg></div>
+                <p class="log-entry">A dusky pod ran the bow wake off Kaikoura for twenty minutes, taking turns leaping across the front of the boat.</p>
+            </article>
+
+            <article class="log-card fade-up" data-d="1">
+                <div class="log-stamp">LOG — LEGAL DOC PARSER</div>
+                <div class="log-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h8l4 4v14H7Z"/><path d="M15 3v4h4"/><path d="M10 13h6M10 17h6"/></svg></div>
+                <p class="log-entry">Side experiment in NLP — pulling structured fields out of dense legal text so a contract is easier to skim and query. <a href="https://github.com/ramachandruniml/legalDocumentParser" target="_blank" rel="noopener">GitHub ↗</a></p>
+            </article>
+
+            <article class="log-card fade-up" data-d="2">
+                <div class="log-stamp">LOG — GREAT BARRIER REEF</div>
+                <div class="log-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 12c-3-5-9-4.5-11.5 0C5 16.5 11 17 14 12Z"/><path d="M14 12l6-3.5v7L14 12Z"/><circle cx="6" cy="10.6" r=".7" fill="currentColor" stroke="none"/></svg></div>
+                <p class="log-entry">An hour drifting over the reef shelf on the Great Barrier Reef, trailing a green turtle that made a point of ignoring me.</p>
+            </article>
+
+            <article class="log-card fade-up" data-d="3">
+                <div class="log-stamp">LOG — YOSEMITE</div>
+                <div class="log-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20 10 6l4 7 2.5-3.5L21 20Z"/><path d="M8 13l2-1.6 1.6 1.6"/></svg></div>
+                <p class="log-entry">Out along an exposed granite ridge in Yosemite. Turned back when the clouds rolled in faster than the forecast promised.</p>
+            </article>
 
         </div>
     </div>
 </section>
+
+<div class="field-divider" aria-hidden="true">
+    <span class="fd-line"></span>
+    <span class="fd-mark"><svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.1"><circle cx="6" cy="6" r="3"/><path d="M6 .5v2M6 9.5v2M.5 6h2M9.5 6h2"/></svg>37.75° N</span>
+    <span class="fd-line"></span>
+</div>
 
 <!-- ─── CONTACT ─── -->
 <section id="contact">
@@ -1461,130 +1541,6 @@
 </footer>
 
 <script>
-// ════════════════════════════════════════════════
-// PARTICLE CANVAS — faster on mouse presence
-// ════════════════════════════════════════════════
-(function () {
-    const canvas = document.getElementById('canvas');
-    const ctx    = canvas.getContext('2d');
-
-    let W = 0, H = 0;
-    const mouse = { x: -9999, y: -9999, active: false };
-
-    const COUNT      = 85;
-    const LINK       = 145;
-    const PULL       = 200;
-    const COLOR      = '176, 80, 112';
-
-    // Speed params — two modes
-    const BASE_DAMP  = 0.900;   // idle
-    const FAST_DAMP  = 0.970;   // mouse on page (less friction → builds speed)
-    const BASE_FORCE = 0.022;   // idle pull
-    const FAST_FORCE = 0.09;    // mouse on page pull (4× stronger)
-
-    class Dot {
-        constructor() {
-            this.x  = Math.random() * W;
-            this.y  = Math.random() * H;
-            this.vx = (Math.random() - 0.5) * 0.05;
-            this.vy = (Math.random() - 0.5) * 0.05;
-            this.r  = Math.random() * 1.8 + 0.9;
-        }
-
-        update() {
-            const fast  = mouse.active;
-            const damp  = fast ? FAST_DAMP  : BASE_DAMP;
-            const force = fast ? FAST_FORCE : BASE_FORCE;
-
-            const dx = mouse.x - this.x;
-            const dy = mouse.y - this.y;
-            const d  = Math.hypot(dx, dy);
-
-            if (d < PULL && d > 0) {
-                const f = (PULL - d) / PULL;
-                this.vx += (dx / d) * f * force;
-                this.vy += (dy / d) * f * force;
-            }
-
-            this.vx *= damp;
-            this.vy *= damp;
-            this.x  += this.vx;
-            this.y  += this.vy;
-
-            if (this.x < 0) this.x = W;
-            if (this.x > W) this.x = 0;
-            if (this.y < 0) this.y = H;
-            if (this.y > H) this.y = 0;
-        }
-
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(${COLOR}, 0.5)`;
-            ctx.fill();
-        }
-    }
-
-    let dots = [];
-
-    function resize() {
-        W = canvas.width  = window.innerWidth;
-        H = canvas.height = window.innerHeight;
-    }
-
-    function init() {
-        resize();
-        dots = Array.from({ length: COUNT }, () => new Dot());
-    }
-
-    function frame() {
-        ctx.clearRect(0, 0, W, H);
-
-        for (let i = 0; i < dots.length; i++) {
-            for (let j = i + 1; j < dots.length; j++) {
-                const dx = dots[i].x - dots[j].x;
-                const dy = dots[i].y - dots[j].y;
-                const d  = Math.hypot(dx, dy);
-                if (d < LINK) {
-                    ctx.beginPath();
-                    ctx.moveTo(dots[i].x, dots[i].y);
-                    ctx.lineTo(dots[j].x, dots[j].y);
-                    ctx.strokeStyle = `rgba(${COLOR}, ${(1 - d / LINK) * 0.22})`;
-                    ctx.lineWidth = 0.75;
-                    ctx.stroke();
-                }
-            }
-            dots[i].update();
-            dots[i].draw();
-        }
-
-        requestAnimationFrame(frame);
-    }
-
-    window.addEventListener('resize', () => {
-        resize();
-        dots.forEach(d => {
-            if (d.x > W) d.x = Math.random() * W;
-            if (d.y > H) d.y = Math.random() * H;
-        });
-    });
-
-    window.addEventListener('mousemove', e => {
-        mouse.x      = e.clientX;
-        mouse.y      = e.clientY;
-        mouse.active = true;
-    });
-
-    window.addEventListener('mouseleave', () => {
-        mouse.x      = -9999;
-        mouse.y      = -9999;
-        mouse.active = false;
-    });
-
-    init();
-    frame();
-})();
-
 // ════════════════════════════════════════════════
 // TYPEWRITER
 // ════════════════════════════════════════════════
@@ -1715,28 +1671,6 @@
     window.addEventListener('resize', moveUnderline, { passive: true });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(moveUnderline);
     updateActive();
-})();
-
-// ════════════════════════════════════════════════
-// GRID LIGHT — cursor pool that lightens the backdrop
-// ════════════════════════════════════════════════
-(function () {
-    const body = document.body;
-    let ticking = false;
-
-    window.addEventListener('pointermove', e => {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(() => {
-            body.style.setProperty('--gx', `${e.clientX}px`);
-            body.style.setProperty('--gy', `${e.clientY}px`);
-            body.classList.add('cursor-active');
-            ticking = false;
-        });
-    }, { passive: true });
-
-    window.addEventListener('pointerleave', () => body.classList.remove('cursor-active'));
-    window.addEventListener('blur',        () => body.classList.remove('cursor-active'));
 })();
 
 // ════════════════════════════════════════════════
