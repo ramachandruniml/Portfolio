@@ -214,23 +214,18 @@
             display: inline-flex;
             align-items: center;
             gap: 0.35rem;
-            padding: 0.55rem 1.2rem;
+            padding: 0.5rem 1.1rem;
             font-size: 0.85rem;
             font-weight: 600;
-            color: white;
-            background: linear-gradient(180deg, var(--rose), var(--rose-dark));
-            border-radius: 8px;
-            text-decoration: none;
-            transition: box-shadow 0.2s, transform 0.2s, filter 0.2s;
             letter-spacing: 0.02em;
-            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.25) inset, 0 4px 12px rgba(176, 80, 112, 0.28);
+            color: white;
+            background: var(--rose);
+            border-radius: 7px;
+            text-decoration: none;
+            transition: background 0.2s ease;
         }
 
-        .nav-resume:hover {
-            filter: brightness(1.06);
-            transform: translateY(-1px);
-            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.25) inset, 0 8px 20px rgba(176, 80, 112, 0.36);
-        }
+        .nav-resume:hover { background: var(--rose-dark); }
 
         /* ─── Main ─── */
         main { position: relative; z-index: 1; }
@@ -489,7 +484,10 @@
         }
 
         .pill {
-            padding: 0.34rem 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.34rem 0.8rem;
             background: rgba(176, 80, 112, 0.09);
             border: 1px solid rgba(176, 80, 112, 0.14);
             color: var(--rose-dark);
@@ -497,13 +495,23 @@
             font-family: var(--mono);
             font-size: 0.74rem;
             font-weight: 400;
-            transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+            transition: background 0.2s ease, border-color 0.2s ease;
         }
 
         .pill:hover {
             background: rgba(176, 80, 112, 0.16);
             border-color: rgba(176, 80, 112, 0.32);
-            transform: translateY(-2px);
+        }
+
+        /* brand logo — simple-icons SVG used as a currentColor mask */
+        .pill-logo {
+            width: 0.95em;
+            height: 0.95em;
+            flex-shrink: 0;
+            opacity: 0.85;
+            background: currentColor;
+            -webkit-mask: var(--i) center / contain no-repeat;
+                    mask: var(--i) center / contain no-repeat;
         }
 
         /* ─── Awards (own section, larger cards) ─── */
@@ -538,10 +546,9 @@
             letter-spacing: 0.04em;
             text-transform: uppercase;
             color: white;
-            background: linear-gradient(180deg, var(--rose), var(--rose-dark));
-            padding: 0.4rem 0.95rem;
-            border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(176, 80, 112, 0.3);
+            background: var(--rose);
+            padding: 0.38rem 0.9rem;
+            border-radius: 7px;
         }
 
         .award-title {
@@ -564,22 +571,21 @@
             align-items: center;
             gap: 0.5rem;
             margin-top: 1.7rem;
-            padding: 0.72rem 1.45rem;
-            font-size: 0.9rem;
+            padding: 0.62rem 1.2rem;
+            font-size: 0.88rem;
             font-weight: 600;
             letter-spacing: 0.01em;
-            color: white;
-            background: linear-gradient(180deg, var(--rose), var(--rose-dark));
-            border-radius: 10px;
+            color: var(--rose-dark);
+            background: transparent;
+            border: 1px solid rgba(176, 80, 112, 0.4);
+            border-radius: 8px;
             text-decoration: none;
-            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.22) inset, 0 6px 18px rgba(176, 80, 112, 0.28);
-            transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+            transition: background 0.2s ease, border-color 0.2s ease;
         }
 
         .hero-cta:hover {
-            filter: brightness(1.06);
-            transform: translateY(-2px);
-            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.22) inset, 0 10px 26px rgba(176, 80, 112, 0.36);
+            background: rgba(176, 80, 112, 0.08);
+            border-color: var(--rose);
         }
 
         /* ─── Lightbox (stop & zoom a project screenshot) ─── */
@@ -938,35 +944,27 @@
             gap: 0.3rem;
             font-size: 0.78rem;
             font-weight: 600;
-            padding: 0.42rem 0.9rem;
-            border-radius: 8px;
+            padding: 0.4rem 0.85rem;
+            border-radius: 7px;
             text-decoration: none;
-            transition: transform 0.2s, box-shadow 0.2s, background 0.2s, filter 0.2s;
             letter-spacing: 0.02em;
+            transition: background 0.2s ease, border-color 0.2s ease;
         }
 
         .proj-link.pri {
-            background: linear-gradient(180deg, var(--rose), var(--rose-dark));
+            background: var(--rose);
             color: white;
-            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 3px 10px rgba(176, 80, 112, 0.25);
         }
 
-        .proj-link.pri:hover {
-            filter: brightness(1.06);
-            transform: translateY(-1px);
-            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 6px 16px rgba(176, 80, 112, 0.34);
-        }
+        .proj-link.pri:hover { background: var(--rose-dark); }
 
         .proj-link.sec {
-            background: rgba(176, 80, 112, 0.1);
+            background: transparent;
             color: var(--rose-dark);
-            border: 1px solid rgba(176, 80, 112, 0.2);
+            border: 1px solid rgba(176, 80, 112, 0.25);
         }
 
-        .proj-link.sec:hover {
-            background: rgba(176, 80, 112, 0.18);
-            transform: translateY(-1px);
-        }
+        .proj-link.sec:hover { background: rgba(176, 80, 112, 0.08); }
 
         /* ─── Contact ─── */
         .contact-desc {
@@ -987,23 +985,18 @@
             display: inline-flex;
             align-items: center;
             gap: 0.6rem;
-            padding: 0.85rem 1.75rem;
-            border-radius: 12px;
-            font-size: 0.95rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9px;
+            font-size: 0.92rem;
             font-weight: 600;
             text-decoration: none;
-            border: 1.5px solid rgba(176, 80, 112, 0.2);
-            background: rgba(255, 254, 250, 0.88);
+            border: 1px solid rgba(176, 80, 112, 0.25);
+            background: transparent;
             color: var(--text);
-            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
-            backdrop-filter: blur(8px);
-            box-shadow: var(--shadow-sm);
+            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
         }
 
-        .contact-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
+        .contact-btn:hover { background: rgba(176, 80, 112, 0.06); }
 
         .contact-btn.gh:hover { background: #1a0a12; color: white; border-color: #1a0a12; }
         .contact-btn.em:hover { background: var(--rose); color: white; border-color: var(--rose); }
@@ -1189,7 +1182,7 @@
         <li><a href="#experience">Experience</a></li>
         <li><a href="#awards">Awards</a></li>
         <li><a href="#projects">Projects</a></li>
-        <li><a href="#explorations">Explorations</a></li>
+        <li><a href="#explorations">Field Trials</a></li>
         <li><a href="#contact">Contact</a></li>
         <li class="nav-underline" aria-hidden="true"></li>
     </ul>
@@ -1277,53 +1270,53 @@
             <div class="skill-group fade-up">
                 <div class="skill-group-label">Languages</div>
                 <div class="skill-chips">
-                    <span class="pill">Java</span>
-                    <span class="pill">Python</span>
-                    <span class="pill">TypeScript</span>
-                    <span class="pill">JavaScript</span>
+                    <span class="pill"><i class="pill-logo" style="--i:url('https://cdn.jsdelivr.net/npm/simple-icons@13/icons/openjdk.svg')"></i>Java</span>
+                    <span class="pill"><i class="pill-logo" style="--i:url('https://cdn.jsdelivr.net/npm/simple-icons@13/icons/python.svg')"></i>Python</span>
+                    <span class="pill"><i class="pill-logo" style="--i:url('https://cdn.jsdelivr.net/npm/simple-icons@13/icons/typescript.svg')"></i>TypeScript</span>
+                    <span class="pill"><i class="pill-logo" style="--i:url('https://cdn.jsdelivr.net/npm/simple-icons@13/icons/javascript.svg')"></i>JavaScript</span>
                     <span class="pill">SQL</span>
-                    <span class="pill">HTML/CSS</span>
+                    <span class="pill"><i class="pill-logo" style="--i:url('https://cdn.jsdelivr.net/npm/simple-icons@13/icons/html5.svg')"></i>HTML/CSS</span>
                 </div>
             </div>
             <div class="skill-group fade-up" data-d="1">
                 <div class="skill-group-label">Frameworks &amp; Libraries</div>
                 <div class="skill-chips">
-                    <span class="pill">React</span>
-                    <span class="pill">Next.js</span>
-                    <span class="pill">Node.js</span>
-                    <span class="pill">FastAPI</span>
-                    <span class="pill">Tailwind CSS</span>
-                    <span class="pill">scikit-learn</span>
+                    <span class="pill"><i class="pill-logo" style="--i:url('https://cdn.jsdelivr.net/npm/simple-icons@13/icons/react.svg')"></i>React</span>
+                    <span class="pill"><i class="pill-logo" style="--i:url('https://cdn.jsdelivr.net/npm/simple-icons@13/icons/nextdotjs.svg')"></i>Next.js</span>
+                    <span class="pill"><i class="pill-logo" style="--i:url('https://cdn.jsdelivr.net/npm/simple-icons@13/icons/nodedotjs.svg')"></i>Node.js</span>
+                    <span class="pill"><i class="pill-logo" style="--i:url('https://cdn.jsdelivr.net/npm/simple-icons@13/icons/fastapi.svg')"></i>FastAPI</span>
+                    <span class="pill"><i class="pill-logo" style="--i:url('https://cdn.jsdelivr.net/npm/simple-icons@13/icons/tailwindcss.svg')"></i>Tailwind CSS</span>
+                    <span class="pill"><i class="pill-logo" style="--i:url('https://cdn.jsdelivr.net/npm/simple-icons@13/icons/scikitlearn.svg')"></i>scikit-learn</span>
                 </div>
             </div>
             <div class="skill-group fade-up" data-d="2">
                 <div class="skill-group-label">Cloud &amp; Backend</div>
                 <div class="skill-chips">
-                    <span class="pill">Supabase</span>
-                    <span class="pill">Firebase</span>
-                    <span class="pill">PostgreSQL</span>
-                    <span class="pill">SQLite</span>
+                    <span class="pill"><i class="pill-logo" style="--i:url('https://cdn.jsdelivr.net/npm/simple-icons@13/icons/supabase.svg')"></i>Supabase</span>
+                    <span class="pill"><i class="pill-logo" style="--i:url('https://cdn.jsdelivr.net/npm/simple-icons@13/icons/firebase.svg')"></i>Firebase</span>
+                    <span class="pill"><i class="pill-logo" style="--i:url('https://cdn.jsdelivr.net/npm/simple-icons@13/icons/postgresql.svg')"></i>PostgreSQL</span>
+                    <span class="pill"><i class="pill-logo" style="--i:url('https://cdn.jsdelivr.net/npm/simple-icons@13/icons/sqlite.svg')"></i>SQLite</span>
                     <span class="pill">REST APIs</span>
                 </div>
             </div>
             <div class="skill-group fade-up" data-d="3">
                 <div class="skill-group-label">AI / ML</div>
                 <div class="skill-chips">
-                    <span class="pill">Claude API</span>
+                    <span class="pill"><i class="pill-logo" style="--i:url('https://cdn.jsdelivr.net/npm/simple-icons@13/icons/claude.svg')"></i>Claude API</span>
                     <span class="pill">Groq API</span>
-                    <span class="pill">OpenAI Whisper</span>
+                    <span class="pill"><i class="pill-logo" style="--i:url('https://cdn.jsdelivr.net/npm/simple-icons@13/icons/openai.svg')"></i>OpenAI Whisper</span>
                     <span class="pill">LLM Integration</span>
                 </div>
             </div>
             <div class="skill-group fade-up" data-d="4">
                 <div class="skill-group-label">Dev Tools</div>
                 <div class="skill-chips">
-                    <span class="pill">Docker</span>
-                    <span class="pill">Git</span>
-                    <span class="pill">GitHub Actions</span>
-                    <span class="pill">Jira</span>
-                    <span class="pill">Figma</span>
-                    <span class="pill">Notion</span>
+                    <span class="pill"><i class="pill-logo" style="--i:url('https://cdn.jsdelivr.net/npm/simple-icons@13/icons/docker.svg')"></i>Docker</span>
+                    <span class="pill"><i class="pill-logo" style="--i:url('https://cdn.jsdelivr.net/npm/simple-icons@13/icons/git.svg')"></i>Git</span>
+                    <span class="pill"><i class="pill-logo" style="--i:url('https://cdn.jsdelivr.net/npm/simple-icons@13/icons/githubactions.svg')"></i>GitHub Actions</span>
+                    <span class="pill"><i class="pill-logo" style="--i:url('https://cdn.jsdelivr.net/npm/simple-icons@13/icons/jira.svg')"></i>Jira</span>
+                    <span class="pill"><i class="pill-logo" style="--i:url('https://cdn.jsdelivr.net/npm/simple-icons@13/icons/figma.svg')"></i>Figma</span>
+                    <span class="pill"><i class="pill-logo" style="--i:url('https://cdn.jsdelivr.net/npm/simple-icons@13/icons/notion.svg')"></i>Notion</span>
                 </div>
             </div>
         </div>
@@ -1600,57 +1593,27 @@
 <section id="explorations">
     <div class="section-inner">
         <div class="sec-head fade-up">
-            <h2 class="sec-title">Field <em>notes.</em></h2>
+            <h2 class="sec-title">Field <em>trials.</em></h2>
             <div class="sec-line"></div>
         </div>
         <div class="logbook">
 
             <article class="log-card fade-up">
-                <div class="log-stamp">LOG — GANSBAAI</div>
-                <div class="log-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17C8 6 13 4 19 5c-1 7-5 11-14 12Z"/><path d="M3 20c4 1.5 10 1.5 15-1"/></svg></div>
-                <p class="log-entry">Dropped into the cage off Gansbaai at first light. Counted the nicks on a great white's dorsal fin as it slid past the bars.</p>
-            </article>
-
-            <article class="log-card fade-up" data-d="1">
-                <div class="log-stamp">LOG — OBSCURA</div>
+                <div class="log-stamp">TRIAL — OBSCURA</div>
                 <div class="log-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.8-7 10-7 10 7 10 7-3.8 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></div>
                 <p class="log-entry">Building a face-detection tool that blurs, pixelates, or blacks out bystanders in footage — tracking stays locked across frames with ByteTrack, and nothing is recognized or stored. <a href="https://github.com/ramachandruniml/Obscura" target="_blank" rel="noopener">GitHub ↗</a></p>
             </article>
 
-            <article class="log-card fade-up" data-d="2">
-                <div class="log-stamp">LOG — MOUNT EVANS</div>
-                <div class="log-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20 10 6l4 7 2.5-3.5L21 20Z"/><path d="M8 13l2-1.6 1.6 1.6"/></svg></div>
-                <p class="log-entry">Drove the highest paved road in North America — 14,130 ft on Mount Evans. Thin air, no guardrails, marmots entirely unbothered.</p>
-            </article>
-
-            <article class="log-card fade-up" data-d="3">
-                <div class="log-stamp">LOG — MUNCHMAP</div>
+            <article class="log-card fade-up" data-d="1">
+                <div class="log-stamp">TRIAL — MUNCHMAP</div>
                 <div class="log-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-8"/><path d="M12 14c-3.5 0-6-2.2-6-6 4 0 6 2.2 6 6Z"/><path d="M12 13c3.2 0 5.5-2 5.5-5.5C14 7.5 12 9.5 12 13Z"/></svg></div>
                 <p class="log-entry">A meal planner that treats a week of eating as a constraint problem: an OR-Tools solver picks recipes that hit macros, stay under budget, and reuse ingredients. <a href="https://github.com/ramachandruniml/Munchmap" target="_blank" rel="noopener">GitHub ↗</a></p>
             </article>
 
-            <article class="log-card fade-up" data-d="4">
-                <div class="log-stamp">LOG — KAIKOURA</div>
-                <div class="log-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15c3.5 0 4-9 9-9s5.5 9 9 9"/><path d="M3 19c1.8.9 3.6.9 5.4 0s3.6-.9 5.4 0 3.6.9 5.2 0"/></svg></div>
-                <p class="log-entry">A dusky pod ran the bow wake off Kaikoura for twenty minutes, taking turns leaping across the front of the boat.</p>
-            </article>
-
-            <article class="log-card fade-up" data-d="1">
-                <div class="log-stamp">LOG — LEGAL DOC PARSER</div>
+            <article class="log-card fade-up" data-d="2">
+                <div class="log-stamp">TRIAL — LEGAL DOC PARSER</div>
                 <div class="log-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h8l4 4v14H7Z"/><path d="M15 3v4h4"/><path d="M10 13h6M10 17h6"/></svg></div>
                 <p class="log-entry">Side experiment in NLP — pulling structured fields out of dense legal text so a contract is easier to skim and query. <a href="https://github.com/ramachandruniml/legalDocumentParser" target="_blank" rel="noopener">GitHub ↗</a></p>
-            </article>
-
-            <article class="log-card fade-up" data-d="2">
-                <div class="log-stamp">LOG — GREAT BARRIER REEF</div>
-                <div class="log-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 12c-3-5-9-4.5-11.5 0C5 16.5 11 17 14 12Z"/><path d="M14 12l6-3.5v7L14 12Z"/><circle cx="6" cy="10.6" r=".7" fill="currentColor" stroke="none"/></svg></div>
-                <p class="log-entry">An hour drifting over the reef shelf on the Great Barrier Reef, trailing a green turtle that made a point of ignoring me.</p>
-            </article>
-
-            <article class="log-card fade-up" data-d="3">
-                <div class="log-stamp">LOG — YOSEMITE</div>
-                <div class="log-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20 10 6l4 7 2.5-3.5L21 20Z"/><path d="M8 13l2-1.6 1.6 1.6"/></svg></div>
-                <p class="log-entry">Out along an exposed granite ridge in Yosemite. Turned back when the clouds rolled in faster than the forecast promised.</p>
             </article>
 
         </div>
