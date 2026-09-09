@@ -7,7 +7,7 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@1,300;1,400;1,500;1,600&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300;1,400;1,500;1,600&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -91,7 +91,7 @@
         .hero-blob.on { opacity: 1; }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Times New Roman', Times, serif;
             color: var(--text);
             overflow-x: hidden;
 
@@ -146,10 +146,10 @@
         }
 
         .nav-logo {
-            font-family: var(--mono);
-            font-size: 0.95rem;
-            font-weight: 600;
-            letter-spacing: 0.02em;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: 0.01em;
             color: var(--text);
             text-decoration: none;
             transform-origin: left center;
@@ -576,15 +576,22 @@
             font-weight: 600;
             letter-spacing: 0.01em;
             color: var(--rose-dark);
-            background: transparent;
+            background: rgba(176, 80, 112, 0.04);
             border: 1px solid rgba(176, 80, 112, 0.4);
             border-radius: 8px;
             text-decoration: none;
+            box-shadow: 0 0 16px rgba(176, 80, 112, 0.35);
+            animation: cta-glow 2.6s ease-in-out infinite alternate;
             transition: background 0.2s ease, border-color 0.2s ease;
         }
 
+        @keyframes cta-glow {
+            from { box-shadow: 0 0 9px rgba(176, 80, 112, 0.25); }
+            to   { box-shadow: 0 0 24px 3px rgba(176, 80, 112, 0.5); }
+        }
+
         .hero-cta:hover {
-            background: rgba(176, 80, 112, 0.08);
+            background: rgba(176, 80, 112, 0.1);
             border-color: var(--rose);
         }
 
@@ -750,6 +757,63 @@
         .card:hover::before,
         .card:hover::after { opacity: 1; }
 
+        /* ─── Project cards: hand-stitched border (SVG overlay) ─── */
+        #projects .card { border-color: transparent; }
+        #projects .card:hover,
+        #projects .card.tilting { border-color: transparent; }
+        #projects .card::after { display: none; }   /* stitching replaces the radial border-glow */
+
+        .stitch {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: visible;
+            z-index: 2;
+        }
+
+        .stitch .st-corner,
+        .stitch .st-rect {
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 5 4;                  /* one continuous thread rhythm */
+            vector-effect: non-scaling-stroke;
+        }
+
+        /* resting: two neutral corner stitches only */
+        .stitch .st-corner { stroke: var(--border); }
+
+        /* hover: accent border sews itself around the perimeter */
+        .stitch .st-rect {
+            stroke: var(--rose);
+            stroke-dashoffset: var(--len, 2000);
+            opacity: 0;
+            /* mouse-leave: wait for knots to clear, then retract */
+            transition: stroke-dashoffset 0.66s ease 0.2s, opacity 0.25s ease 0.5s;
+        }
+
+        #projects .card:hover .st-rect {
+            opacity: 1;
+            stroke-dashoffset: 0;
+            transition: stroke-dashoffset 0.66s ease, opacity 0.15s ease;
+        }
+
+        /* knots: hand-sewn stitch-ends at each corner, staggered in after the draw */
+        .stitch .st-knot {
+            fill: var(--rose);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        #projects .card:hover .st-knot { opacity: 1; }
+        #projects .card:hover .st-knot:nth-child(4) { transition-delay: 0.6s; }
+        #projects .card:hover .st-knot:nth-child(5) { transition-delay: 0.75s; }
+        #projects .card:hover .st-knot:nth-child(6) { transition-delay: 0.9s; }
+        #projects .card:hover .st-knot:nth-child(7) { transition-delay: 1.05s; }
+
         .card-label {
             font-family: var(--mono);
             font-size: 0.68rem;
@@ -773,6 +837,39 @@
             color: var(--text-mid);
             font-style: italic;
             margin-bottom: 0.75rem;
+        }
+
+        /* Involvement: the position leads and stands out; org name follows */
+        #involvement .card-sub {
+            font-style: normal;
+            margin-bottom: 0.35rem;
+        }
+
+        #involvement .card-sub strong {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--rose-dark);
+            letter-spacing: -0.01em;
+            line-height: 1.25;
+        }
+
+        #involvement .card-sub .when {
+            display: block;
+            margin-top: 0.15rem;
+            font-family: var(--mono);
+            font-size: 0.66rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--text-mid);
+        }
+
+        #involvement .card-title {
+            font-size: 0.95rem;
+            font-weight: 400;
+            font-style: italic;
+            color: var(--text-mid);
+            margin-bottom: 0.7rem;
         }
 
         .card-desc {
@@ -1157,6 +1254,7 @@
         @media (prefers-reduced-motion: reduce) {
             .hero-blob { display: none !important; }
             .scroll-arrow { animation: none !important; }
+            .hero-cta { animation: none !important; box-shadow: 0 0 16px rgba(176, 80, 112, 0.35) !important; }
 
             .shot-strip {
                 overflow-x: auto;
@@ -1165,6 +1263,11 @@
             }
             .shot-track { transform: none !important; }
             .shot-track img[aria-hidden="true"] { display: none; }
+
+            /* stitched border: no draw animation, just show/hide the full border */
+            .stitch .st-rect { transition-delay: 0s !important; }
+            .stitch .st-knot,
+            #projects .card:hover .st-knot { transition-delay: 0s !important; }
         }
     </style>
 </head>
@@ -1338,21 +1441,18 @@
         </div>
         <div class="cards-grid">
             <div class="card fade-up">
-                <div class="card-label">Leadership</div>
+                <div class="card-sub"><strong>VP of Systems</strong><span class="when">Jan. 2026 – Present</span></div>
                 <div class="card-title">Women in Business Technology (WIBT)</div>
-                <div class="card-sub">VP of Systems · Jan. 2026 – Present</div>
                 <div class="card-desc">Elected VP of Systems for Fall 2026. Manage the website for a 100+ member organization, shipping 10+ updates per semester and connecting members with 20+ industry professionals.</div>
             </div>
             <div class="card fade-up" data-d="1">
-                <div class="card-label">Activities</div>
+                <div class="card-sub"><strong>Undergraduate Activities Chair</strong><span class="when">Feb. 2026 – Present</span></div>
                 <div class="card-title">WACM</div>
-                <div class="card-sub">Undergraduate Activities Chair · Feb. 2026 – Present</div>
                 <div class="card-desc">Selected as Undergraduate Activities Chair for Fall 2026. Organize monthly events for 50+ members featuring engineers from Google, Microsoft, and other top tech companies.</div>
             </div>
             <div class="card fade-up" data-d="2">
-                <div class="card-label">Product</div>
+                <div class="card-sub"><strong>Selected Member</strong><span class="when">Feb. 2026 – Present</span></div>
                 <div class="card-title">Product Management Club</div>
-                <div class="card-sub">Selected Member · Feb. 2026 – Present</div>
                 <div class="card-desc">Participant in the club-exclusive case competition. Created an innovative solution for Codaworx to increase its customer base.</div>
             </div>
         </div>
@@ -2095,6 +2195,72 @@
             }).onfinish = () => p.remove();
         }
     }
+})();
+
+// ════════════════════════════════════════════════
+// STITCHED BORDER — SVG overlay on Project cards only
+// ════════════════════════════════════════════════
+(function () {
+    const cards = document.querySelectorAll('#projects .card');
+    if (!cards.length) return;
+
+    const NS = 'http://www.w3.org/2000/svg';
+    const ARM = 24, RX = 16, INSET = 1.5;
+
+    cards.forEach(card => {
+        const svg = document.createElementNS(NS, 'svg');
+        svg.setAttribute('class', 'stitch');
+        svg.setAttribute('preserveAspectRatio', 'none');
+        svg.setAttribute('aria-hidden', 'true');
+
+        const el = (tag, cls) => {
+            const n = document.createElementNS(NS, tag);
+            n.setAttribute('class', cls);
+            return n;
+        };
+
+        const tl   = el('path', 'st-corner');   // top-left resting stitch
+        const br   = el('path', 'st-corner');   // bottom-right resting stitch
+        const rect = el('rect', 'st-rect');     // full perimeter, drawn on hover
+        rect.setAttribute('rx', RX);
+        rect.setAttribute('ry', RX);
+        const knots = [0, 1, 2, 3].map(() => {
+            const c = el('circle', 'st-knot');
+            c.setAttribute('r', 2.6);
+            return c;
+        });
+
+        svg.append(tl, br, rect, ...knots);
+        card.appendChild(svg);
+
+        function sync() {
+            const w = card.clientWidth, h = card.clientHeight;
+            if (!w || !h) return;
+            svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+
+            tl.setAttribute('d', `M ${INSET} ${ARM + INSET} L ${INSET} ${INSET} L ${ARM + INSET} ${INSET}`);
+            br.setAttribute('d', `M ${w - INSET} ${h - ARM - INSET} L ${w - INSET} ${h - INSET} L ${w - ARM - INSET} ${h - INSET}`);
+
+            rect.setAttribute('x', INSET);
+            rect.setAttribute('y', INSET);
+            rect.setAttribute('width', w - 2 * INSET);
+            rect.setAttribute('height', h - 2 * INSET);
+
+            // perimeter of the rounded rect → dashoffset that fully hides it
+            const len = 2 * ((w - 2 * INSET) + (h - 2 * INSET)) - (8 - 2 * Math.PI) * RX;
+            rect.style.setProperty('--len', Math.ceil(len));
+
+            const pts = [[INSET, INSET], [w - INSET, INSET], [w - INSET, h - INSET], [INSET, h - INSET]];
+            knots.forEach((k, i) => {
+                k.setAttribute('cx', pts[i][0]);
+                k.setAttribute('cy', pts[i][1]);
+            });
+        }
+
+        sync();
+        if (window.ResizeObserver) new ResizeObserver(sync).observe(card);
+        else window.addEventListener('resize', sync, { passive: true });
+    });
 })();
 </script>
 
