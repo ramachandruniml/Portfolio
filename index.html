@@ -165,7 +165,7 @@
 
         .nav-links {
             display: flex;
-            gap: 2.5rem;
+            gap: 1.6rem;
             list-style: none;
             position: relative;
         }
@@ -455,72 +455,189 @@
             margin-bottom: 1.1rem;
         }
 
-        .pills {
-            margin-top: 1.6rem;
-            overflow: hidden;
-            -webkit-mask: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
-                    mask: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+        /* ─── Skills (own section, categorized) ─── */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 1.9rem 2.75rem;
         }
 
-        .pills-track {
+        .skill-group-label {
             display: flex;
-            width: max-content;
-            animation: pill-scroll 34s linear infinite;
+            align-items: center;
+            gap: 0.6rem;
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--rose);
+            margin-bottom: 0.9rem;
         }
 
-        .pills:hover .pills-track { animation-play-state: paused; }
+        .skill-group-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(176, 80, 112, 0.28), transparent);
+        }
 
-        @keyframes pill-scroll {
-            from { transform: translateX(0); }
-            to   { transform: translateX(-50%); }
+        .skill-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
 
         .pill {
-            flex-shrink: 0;
-            white-space: nowrap;
-            margin-right: 0.5rem;
-            padding: 0.3rem 0.8rem;
+            padding: 0.34rem 0.85rem;
             background: rgba(176, 80, 112, 0.09);
             border: 1px solid rgba(176, 80, 112, 0.14);
             color: var(--rose-dark);
             border-radius: 8px;
             font-family: var(--mono);
-            font-size: 0.72rem;
+            font-size: 0.74rem;
             font-weight: 400;
-            letter-spacing: 0;
+            transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
         }
 
-        /* Awards within about */
-        .awards-list {
-            margin-top: 2rem;
+        .pill:hover {
+            background: rgba(176, 80, 112, 0.16);
+            border-color: rgba(176, 80, 112, 0.32);
+            transform: translateY(-2px);
+        }
+
+        /* ─── Awards (own section, larger cards) ─── */
+        .awards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .award-card {
             display: flex;
             flex-direction: column;
-            gap: 0.55rem;
+            gap: 0.9rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .award-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.65rem;
-            font-size: 0.875rem;
-            line-height: 1.5;
-            color: var(--text-mid);
+        .award-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
         }
 
-        .award-badge {
-            flex-shrink: 0;
+        .award-rank {
+            align-self: flex-start;
             font-family: var(--mono);
-            font-size: 0.64rem;
-            font-weight: 600;
-            letter-spacing: 0.06em;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
             text-transform: uppercase;
             color: white;
             background: linear-gradient(180deg, var(--rose), var(--rose-dark));
-            padding: 0.22rem 0.55rem;
-            border-radius: 5px;
-            margin-top: 0.1rem;
-            box-shadow: 0 2px 6px rgba(176, 80, 112, 0.25);
+            padding: 0.4rem 0.95rem;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(176, 80, 112, 0.3);
         }
+
+        .award-title {
+            font-size: 1.18rem;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.35;
+        }
+
+        .award-meta {
+            font-size: 0.86rem;
+            font-style: italic;
+            color: var(--text-mid);
+            line-height: 1.5;
+        }
+
+        /* ─── Hero "get in touch" CTA ─── */
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1.7rem;
+            padding: 0.72rem 1.45rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+            color: white;
+            background: linear-gradient(180deg, var(--rose), var(--rose-dark));
+            border-radius: 10px;
+            text-decoration: none;
+            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.22) inset, 0 6px 18px rgba(176, 80, 112, 0.28);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+        }
+
+        .hero-cta:hover {
+            filter: brightness(1.06);
+            transform: translateY(-2px);
+            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.22) inset, 0 10px 26px rgba(176, 80, 112, 0.36);
+        }
+
+        /* ─── Lightbox (stop & zoom a project screenshot) ─── */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 1200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4vmin;
+            overflow: hidden;
+            background: rgba(26, 10, 18, 0.82);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .lightbox[hidden] { display: none !important; }
+
+        .lightbox.open { opacity: 1; }
+
+        .lightbox img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+            cursor: zoom-in;
+            user-select: none;
+            transform-origin: center center;
+            transition: transform 0.25s ease;
+        }
+
+        .lightbox img.zoomed {
+            cursor: zoom-out;
+            transform: scale(2.3);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.4rem;
+            width: 40px;
+            height: 40px;
+            display: grid;
+            place-items: center;
+            border: none;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.14);
+            color: white;
+            font-size: 1.4rem;
+            line-height: 1;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .lightbox-close:hover { background: rgba(255, 255, 255, 0.28); }
 
         .about-photo {
             position: relative;
@@ -796,6 +913,7 @@
             margin-right: 10px;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(122, 48, 80, 0.16);
+            cursor: zoom-in;
             transition: transform 0.35s ease, box-shadow 0.35s ease;
             -webkit-user-drag: none;
             user-select: none;
@@ -1044,18 +1162,6 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .pills {
-                overflow: visible;
-                -webkit-mask: none;
-                        mask: none;
-            }
-            .pills-track {
-                animation: none !important;
-                transform: none !important;
-                flex-wrap: wrap;
-                width: auto;
-            }
-            .pills-track .pill[aria-hidden="true"] { display: none; }
             .hero-blob { display: none !important; }
             .scroll-arrow { animation: none !important; }
 
@@ -1078,8 +1184,10 @@
     <a href="#hero" class="nav-logo">mlr.</a>
     <ul class="nav-links">
         <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
         <li><a href="#involvement">Involvement</a></li>
         <li><a href="#experience">Experience</a></li>
+        <li><a href="#awards">Awards</a></li>
         <li><a href="#projects">Projects</a></li>
         <li><a href="#explorations">Explorations</a></li>
         <li><a href="#contact">Contact</a></li>
@@ -1104,6 +1212,10 @@
         <p class="roles">
             <span class="roles-label">I'm a</span><span id="roles" class="roles-text"></span><span class="cursor-blink"></span>
         </p>
+        <a class="hero-cta" href="mailto:mallika.ramachandruni11@gmail.com">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+            Get in touch
+        </a>
         <div class="scroll-hint" aria-hidden="true">
             <span class="scroll-track"><span class="scroll-fill"></span></span>
             <svg class="scroll-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -1140,57 +1252,79 @@
                 <p>
                     I'm actively looking for internship opportunities for Summer 2027. Feel free to reach out!
                 </p>
-
-                <div class="pills">
-                    <div class="pills-track">
-                        <span class="pill">Java</span>
-                        <span class="pill">Python</span>
-                        <span class="pill">TypeScript</span>
-                        <span class="pill">JavaScript</span>
-                        <span class="pill">SQL</span>
-                        <span class="pill">React</span>
-                        <span class="pill">Next.js</span>
-                        <span class="pill">FastAPI</span>
-                        <span class="pill">Node.js</span>
-                        <span class="pill">Tailwind CSS</span>
-                        <span class="pill">scikit-learn</span>
-                        <span class="pill">Docker</span>
-                        <span class="pill">Supabase</span>
-                        <span class="pill">Firebase</span>
-                        <span class="pill" aria-hidden="true">Java</span>
-                        <span class="pill" aria-hidden="true">Python</span>
-                        <span class="pill" aria-hidden="true">TypeScript</span>
-                        <span class="pill" aria-hidden="true">JavaScript</span>
-                        <span class="pill" aria-hidden="true">SQL</span>
-                        <span class="pill" aria-hidden="true">React</span>
-                        <span class="pill" aria-hidden="true">Next.js</span>
-                        <span class="pill" aria-hidden="true">FastAPI</span>
-                        <span class="pill" aria-hidden="true">Node.js</span>
-                        <span class="pill" aria-hidden="true">Tailwind CSS</span>
-                        <span class="pill" aria-hidden="true">scikit-learn</span>
-                        <span class="pill" aria-hidden="true">Docker</span>
-                        <span class="pill" aria-hidden="true">Supabase</span>
-                        <span class="pill" aria-hidden="true">Firebase</span>
-                    </div>
-                </div>
-
-                <div class="awards-list">
-                    <div class="award-item">
-                        <span class="award-badge">2nd</span>
-                        <span>BadgerAI Hackathon &mdash; competed among 80+ participants (April 2026)</span>
-                    </div>
-                    <div class="award-item">
-                        <span class="award-badge">3rd</span>
-                        <span>Women in Business &times; Uline Case Competition, UW–Madison (Oct. 2025)</span>
-                    </div>
-                    <div class="award-item">
-                        <span class="award-badge" style="background:var(--rose-dark);">Cert</span>
-                        <span>Java Certificate &amp; Python Certificate &mdash; Certiport (2024)</span>
-                    </div>
-                </div>
             </div>
             <div class="about-photo fade-up" data-d="1">
                 <img src="laasyaHeadshot.jpeg" alt="Mallika Laasya Ramachandruni">
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="field-divider" aria-hidden="true">
+    <span class="fd-line"></span>
+    <span class="fd-mark"><svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.1"><circle cx="6" cy="6" r="3"/><path d="M6 .5v2M6 9.5v2M.5 6h2M9.5 6h2"/></svg>43.09° N</span>
+    <span class="fd-line"></span>
+</div>
+
+<!-- ─── SKILLS ─── -->
+<section id="skills">
+    <div class="section-inner">
+        <div class="sec-head fade-up">
+            <h2 class="sec-title">Skills<em>.</em></h2>
+            <div class="sec-line"></div>
+        </div>
+        <div class="skills-grid">
+            <div class="skill-group fade-up">
+                <div class="skill-group-label">Languages</div>
+                <div class="skill-chips">
+                    <span class="pill">Java</span>
+                    <span class="pill">Python</span>
+                    <span class="pill">TypeScript</span>
+                    <span class="pill">JavaScript</span>
+                    <span class="pill">SQL</span>
+                    <span class="pill">HTML/CSS</span>
+                </div>
+            </div>
+            <div class="skill-group fade-up" data-d="1">
+                <div class="skill-group-label">Frameworks &amp; Libraries</div>
+                <div class="skill-chips">
+                    <span class="pill">React</span>
+                    <span class="pill">Next.js</span>
+                    <span class="pill">Node.js</span>
+                    <span class="pill">FastAPI</span>
+                    <span class="pill">Tailwind CSS</span>
+                    <span class="pill">scikit-learn</span>
+                </div>
+            </div>
+            <div class="skill-group fade-up" data-d="2">
+                <div class="skill-group-label">Cloud &amp; Backend</div>
+                <div class="skill-chips">
+                    <span class="pill">Supabase</span>
+                    <span class="pill">Firebase</span>
+                    <span class="pill">PostgreSQL</span>
+                    <span class="pill">SQLite</span>
+                    <span class="pill">REST APIs</span>
+                </div>
+            </div>
+            <div class="skill-group fade-up" data-d="3">
+                <div class="skill-group-label">AI / ML</div>
+                <div class="skill-chips">
+                    <span class="pill">Claude API</span>
+                    <span class="pill">Groq API</span>
+                    <span class="pill">OpenAI Whisper</span>
+                    <span class="pill">LLM Integration</span>
+                </div>
+            </div>
+            <div class="skill-group fade-up" data-d="4">
+                <div class="skill-group-label">Dev Tools</div>
+                <div class="skill-chips">
+                    <span class="pill">Docker</span>
+                    <span class="pill">Git</span>
+                    <span class="pill">GitHub Actions</span>
+                    <span class="pill">Jira</span>
+                    <span class="pill">Figma</span>
+                    <span class="pill">Notion</span>
+                </div>
             </div>
         </div>
     </div>
@@ -1301,6 +1435,39 @@
                 </ul>
             </div>
 
+        </div>
+    </div>
+</section>
+
+<div class="field-divider" aria-hidden="true">
+    <span class="fd-line"></span>
+    <span class="fd-mark"><svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.1"><circle cx="6" cy="6" r="3"/><path d="M6 .5v2M6 9.5v2M.5 6h2M9.5 6h2"/></svg>41.88° N</span>
+    <span class="fd-line"></span>
+</div>
+
+<!-- ─── AWARDS ─── -->
+<section id="awards">
+    <div class="section-inner">
+        <div class="sec-head fade-up">
+            <h2 class="sec-title">Awards <em>&amp; recognition.</em></h2>
+            <div class="sec-line"></div>
+        </div>
+        <div class="awards-grid">
+            <div class="award-card fade-up">
+                <span class="award-rank">2nd Place</span>
+                <div class="award-title">BadgerAI Hackathon</div>
+                <div class="award-meta">Built VitalLens end-to-end during the event · among 80+ participants · April 2026</div>
+            </div>
+            <div class="award-card fade-up" data-d="1">
+                <span class="award-rank">3rd Place</span>
+                <div class="award-title">Women in Business &times; Uline Case Competition</div>
+                <div class="award-meta">UW–Madison · Oct. 2025</div>
+            </div>
+            <div class="award-card fade-up" data-d="2">
+                <span class="award-rank">Certified</span>
+                <div class="award-title">Java &amp; Python Certificates</div>
+                <div class="award-meta">Certiport · 2024</div>
+            </div>
         </div>
     </div>
 </section>
@@ -1540,6 +1707,11 @@
     <p>2026</p>
 </footer>
 
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged screenshot" hidden>
+    <button class="lightbox-close" type="button" aria-label="Close">&times;</button>
+    <img alt="">
+</div>
+
 <script>
 // ════════════════════════════════════════════════
 // TYPEWRITER
@@ -1687,6 +1859,16 @@
         let raf = null;
 
         card.addEventListener('pointermove', e => {
+            // don't tilt while the cursor is over a screenshot strip —
+            // the user is trying to hold still and click to zoom
+            if (e.target.closest('.shot-strip')) {
+                if (card.classList.contains('tilting')) {
+                    card.classList.remove('tilting');
+                    card.style.setProperty('--rx', '0deg');
+                    card.style.setProperty('--ry', '0deg');
+                }
+                return;
+            }
             if (raf) return;
             const r = card.getBoundingClientRect();
             const px = (e.clientX - r.left) / r.width;
@@ -1748,8 +1930,11 @@
     });
 
     function frame() {
+        const paused = window.__lightboxOpen;
         for (const s of items) {
-            s.offset += (s.hovering ? 0 : BASE * s.dir) + kick;
+            // hovering a strip (or an open lightbox) fully stops it, so a
+            // screenshot can be clicked and inspected
+            s.offset += (s.hovering || paused) ? 0 : (BASE * s.dir) + kick;
             if (s.half > 0) {
                 s.offset %= s.half;
                 if (s.offset < 0) s.offset += s.half;
@@ -1760,6 +1945,63 @@
         requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
+})();
+
+// ════════════════════════════════════════════════
+// LIGHTBOX — click a project screenshot to stop & zoom in
+// ════════════════════════════════════════════════
+(function () {
+    const box = document.getElementById('lightbox');
+    if (!box) return;
+    const img      = box.querySelector('img');
+    const closeBtn = box.querySelector('.lightbox-close');
+    let lastFocus  = null;
+
+    function open(src, alt) {
+        img.src = src;
+        img.alt = alt || '';
+        img.classList.remove('zoomed');
+        img.style.transformOrigin = 'center center';
+        lastFocus = document.activeElement;
+        box.hidden = false;
+        requestAnimationFrame(() => box.classList.add('open'));
+        document.body.style.overflow = 'hidden';
+        window.__lightboxOpen = true;
+        closeBtn.focus();
+    }
+
+    function close() {
+        box.classList.remove('open');
+        window.__lightboxOpen = false;
+        document.body.style.overflow = '';
+        setTimeout(() => { box.hidden = true; img.removeAttribute('src'); }, 250);
+        if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    box.addEventListener('click', e => { if (e.target === box) close(); });
+    closeBtn.addEventListener('click', close);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && !box.hidden) close(); });
+
+    img.addEventListener('click', e => {
+        e.stopPropagation();
+        img.classList.toggle('zoomed');
+    });
+    img.addEventListener('mousemove', e => {
+        if (!img.classList.contains('zoomed')) return;
+        const r = img.getBoundingClientRect();
+        const x = Math.min(100, Math.max(0, ((e.clientX - r.left) / r.width) * 100));
+        const y = Math.min(100, Math.max(0, ((e.clientY - r.top) / r.height) * 100));
+        img.style.transformOrigin = `${x}% ${y}%`;
+    });
+
+    document.querySelectorAll('.shot-track img').forEach(el => {
+        el.addEventListener('click', () => {
+            const alt = el.getAttribute('alt')
+                || el.closest('.shot-strip')?.getAttribute('aria-label')
+                || 'Project screenshot';
+            open(el.currentSrc || el.src, alt);
+        });
+    });
 })();
 
 // ════════════════════════════════════════════════
