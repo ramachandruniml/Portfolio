@@ -7,7 +7,7 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300;1,400;1,500;1,600&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300;1,400;1,500;1,600&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -91,7 +91,7 @@
         .hero-blob.on { opacity: 1; }
 
         body {
-            font-family: 'Times New Roman', Times, serif;
+            font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
             color: var(--text);
             overflow-x: hidden;
 
@@ -146,7 +146,7 @@
         }
 
         .nav-logo {
-            font-family: 'Times New Roman', Times, serif;
+            font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
             font-size: 1.15rem;
             font-weight: 700;
             letter-spacing: 0.01em;
@@ -545,9 +545,10 @@
             font-weight: 700;
             letter-spacing: 0.04em;
             text-transform: uppercase;
-            color: white;
-            background: var(--rose);
-            padding: 0.38rem 0.9rem;
+            color: var(--rose-dark);
+            background: rgba(176, 80, 112, 0.05);
+            border: 1px dashed var(--rose);
+            padding: 0.36rem 0.85rem;
             border-radius: 7px;
         }
 
@@ -580,14 +581,14 @@
             border: 1px solid rgba(176, 80, 112, 0.4);
             border-radius: 8px;
             text-decoration: none;
-            box-shadow: 0 0 16px rgba(176, 80, 112, 0.35);
-            animation: cta-glow 2.6s ease-in-out infinite alternate;
+            box-shadow: 0 0 26px 5px rgba(176, 80, 112, 0.55);
+            animation: cta-glow 2.4s ease-in-out infinite alternate;
             transition: background 0.2s ease, border-color 0.2s ease;
         }
 
         @keyframes cta-glow {
-            from { box-shadow: 0 0 9px rgba(176, 80, 112, 0.25); }
-            to   { box-shadow: 0 0 24px 3px rgba(176, 80, 112, 0.5); }
+            from { box-shadow: 0 0 18px 2px rgba(176, 80, 112, 0.45); }
+            to   { box-shadow: 0 0 44px 10px rgba(176, 80, 112, 0.8); }
         }
 
         .hero-cta:hover {
@@ -757,11 +758,13 @@
         .card:hover::before,
         .card:hover::after { opacity: 1; }
 
-        /* ─── Project cards: hand-stitched border (SVG overlay) ─── */
-        #projects .card { border-color: transparent; }
-        #projects .card:hover,
-        #projects .card.tilting { border-color: transparent; }
-        #projects .card::after { display: none; }   /* stitching replaces the radial border-glow */
+        /* ─── Card sections: hand-stitched border (SVG overlay) ─── */
+        /* applied via JS to Projects, Involvement, Awards, and Field Trials cards */
+        .stitched {
+            position: relative;
+            border-color: transparent !important;
+        }
+        .card.stitched::after { display: none; }   /* stitching replaces the radial border-glow */
 
         .stitch {
             position: absolute;
@@ -795,7 +798,7 @@
             transition: stroke-dashoffset 0.66s ease 0.2s, opacity 0.25s ease 0.5s;
         }
 
-        #projects .card:hover .st-rect {
+        .stitched:hover .st-rect {
             opacity: 1;
             stroke-dashoffset: 0;
             transition: stroke-dashoffset 0.66s ease, opacity 0.15s ease;
@@ -808,11 +811,11 @@
             transition: opacity 0.2s ease;
         }
 
-        #projects .card:hover .st-knot { opacity: 1; }
-        #projects .card:hover .st-knot:nth-child(4) { transition-delay: 0.6s; }
-        #projects .card:hover .st-knot:nth-child(5) { transition-delay: 0.75s; }
-        #projects .card:hover .st-knot:nth-child(6) { transition-delay: 0.9s; }
-        #projects .card:hover .st-knot:nth-child(7) { transition-delay: 1.05s; }
+        .stitched:hover .st-knot { opacity: 1; }
+        .stitched:hover .st-knot:nth-child(4) { transition-delay: 0.6s; }
+        .stitched:hover .st-knot:nth-child(5) { transition-delay: 0.75s; }
+        .stitched:hover .st-knot:nth-child(6) { transition-delay: 0.9s; }
+        .stitched:hover .st-knot:nth-child(7) { transition-delay: 1.05s; }
 
         .card-label {
             font-family: var(--mono);
@@ -839,37 +842,31 @@
             margin-bottom: 0.75rem;
         }
 
-        /* Involvement: the position leads and stands out; org name follows */
+        /* Involvement: club name leads (as the title); the role sits below it, bold */
+        #involvement .card-title {
+            margin-bottom: 0.15rem;
+        }
+
         #involvement .card-sub {
             font-style: normal;
-            margin-bottom: 0.35rem;
+            margin-bottom: 0.7rem;
         }
 
         #involvement .card-sub strong {
             display: block;
-            font-size: 1.2rem;
             font-weight: 700;
+            font-size: 1rem;
             color: var(--rose-dark);
-            letter-spacing: -0.01em;
-            line-height: 1.25;
         }
 
         #involvement .card-sub .when {
             display: block;
-            margin-top: 0.15rem;
+            margin-top: 0.2rem;
             font-family: var(--mono);
-            font-size: 0.66rem;
+            font-size: 0.64rem;
             letter-spacing: 0.06em;
             text-transform: uppercase;
             color: var(--text-mid);
-        }
-
-        #involvement .card-title {
-            font-size: 0.95rem;
-            font-weight: 400;
-            font-style: italic;
-            color: var(--text-mid);
-            margin-bottom: 0.7rem;
         }
 
         .card-desc {
@@ -1195,9 +1192,15 @@
             gap: 0.85rem;
             padding: 1.5rem;
             background: var(--card-bg);
-            border: 1px dashed rgba(var(--ink-rgb), 0.55);
+            border: 1px solid var(--border);
             border-radius: 12px;
             box-shadow: var(--shadow-sm);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .log-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
         }
 
         .log-icon {
@@ -1254,7 +1257,7 @@
         @media (prefers-reduced-motion: reduce) {
             .hero-blob { display: none !important; }
             .scroll-arrow { animation: none !important; }
-            .hero-cta { animation: none !important; box-shadow: 0 0 16px rgba(176, 80, 112, 0.35) !important; }
+            .hero-cta { animation: none !important; box-shadow: 0 0 32px 6px rgba(176, 80, 112, 0.6) !important; }
 
             .shot-strip {
                 overflow-x: auto;
@@ -1267,7 +1270,7 @@
             /* stitched border: no draw animation, just show/hide the full border */
             .stitch .st-rect { transition-delay: 0s !important; }
             .stitch .st-knot,
-            #projects .card:hover .st-knot { transition-delay: 0s !important; }
+            .stitched:hover .st-knot { transition-delay: 0s !important; }
         }
     </style>
 </head>
@@ -1441,18 +1444,18 @@
         </div>
         <div class="cards-grid">
             <div class="card fade-up">
-                <div class="card-sub"><strong>VP of Systems</strong><span class="when">Jan. 2026 – Present</span></div>
                 <div class="card-title">Women in Business Technology (WIBT)</div>
+                <div class="card-sub"><strong>VP of Systems</strong><span class="when">Jan. 2026 – Present</span></div>
                 <div class="card-desc">Elected VP of Systems for Fall 2026. Manage the website for a 100+ member organization, shipping 10+ updates per semester and connecting members with 20+ industry professionals.</div>
             </div>
             <div class="card fade-up" data-d="1">
-                <div class="card-sub"><strong>Undergraduate Activities Chair</strong><span class="when">Feb. 2026 – Present</span></div>
                 <div class="card-title">WACM</div>
+                <div class="card-sub"><strong>Undergraduate Activities Chair</strong><span class="when">Feb. 2026 – Present</span></div>
                 <div class="card-desc">Selected as Undergraduate Activities Chair for Fall 2026. Organize monthly events for 50+ members featuring engineers from Google, Microsoft, and other top tech companies.</div>
             </div>
             <div class="card fade-up" data-d="2">
-                <div class="card-sub"><strong>Selected Member</strong><span class="when">Feb. 2026 – Present</span></div>
                 <div class="card-title">Product Management Club</div>
+                <div class="card-sub"><strong>Selected Member</strong><span class="when">Feb. 2026 – Present</span></div>
                 <div class="card-desc">Participant in the club-exclusive case competition. Created an innovative solution for Codaworx to increase its customer base.</div>
             </div>
         </div>
@@ -2198,16 +2201,22 @@
 })();
 
 // ════════════════════════════════════════════════
-// STITCHED BORDER — SVG overlay on Project cards only
+// STITCHED BORDER — SVG overlay on every card section
+// (Projects, Involvement, Awards, Field Trials)
 // ════════════════════════════════════════════════
 (function () {
-    const cards = document.querySelectorAll('#projects .card');
+    const cards = document.querySelectorAll(
+        '#projects .card, #involvement .card, #awards .award-card, #explorations .log-card'
+    );
     if (!cards.length) return;
 
     const NS = 'http://www.w3.org/2000/svg';
-    const ARM = 24, RX = 16, INSET = 1.5;
+    const ARM = 24, INSET = 1.5;
 
     cards.forEach(card => {
+        card.classList.add('stitched');
+        const rx = Math.round(parseFloat(getComputedStyle(card).borderTopLeftRadius)) || 16;
+
         const svg = document.createElementNS(NS, 'svg');
         svg.setAttribute('class', 'stitch');
         svg.setAttribute('preserveAspectRatio', 'none');
@@ -2222,8 +2231,8 @@
         const tl   = el('path', 'st-corner');   // top-left resting stitch
         const br   = el('path', 'st-corner');   // bottom-right resting stitch
         const rect = el('rect', 'st-rect');     // full perimeter, drawn on hover
-        rect.setAttribute('rx', RX);
-        rect.setAttribute('ry', RX);
+        rect.setAttribute('rx', rx);
+        rect.setAttribute('ry', rx);
         const knots = [0, 1, 2, 3].map(() => {
             const c = el('circle', 'st-knot');
             c.setAttribute('r', 2.6);
@@ -2247,7 +2256,7 @@
             rect.setAttribute('height', h - 2 * INSET);
 
             // perimeter of the rounded rect → dashoffset that fully hides it
-            const len = 2 * ((w - 2 * INSET) + (h - 2 * INSET)) - (8 - 2 * Math.PI) * RX;
+            const len = 2 * ((w - 2 * INSET) + (h - 2 * INSET)) - (8 - 2 * Math.PI) * rx;
             rect.style.setProperty('--len', Math.ceil(len));
 
             const pts = [[INSET, INSET], [w - INSET, INSET], [w - INSET, h - INSET], [INSET, h - INSET]];
