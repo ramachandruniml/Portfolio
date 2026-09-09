@@ -88,6 +88,42 @@
             background-size: 140px 140px;
         }
 
+        /* ─── Scroll progress ─── */
+        .scroll-progress {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            z-index: 999;
+            pointer-events: none;
+        }
+
+        .scroll-progress span {
+            display: block;
+            height: 100%;
+            background: linear-gradient(90deg, var(--rose), var(--rose-dark));
+            transform: scaleX(var(--progress, 0));
+            transform-origin: left center;
+            will-change: transform;
+        }
+
+        /* ─── Hero cursor blob ─── */
+        .hero-blob {
+            position: fixed;
+            top: 0; left: 0;
+            width: 300px; height: 300px;
+            margin: -150px 0 0 -150px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(176, 80, 112, 0.22), rgba(176, 80, 112, 0) 70%);
+            filter: blur(45px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 0.45s ease;
+            will-change: transform;
+        }
+
+        .hero-blob.on { opacity: 1; }
+
         body {
             font-family: 'Inter', sans-serif;
             background: var(--pink);
@@ -151,12 +187,37 @@
             letter-spacing: 0.02em;
             color: var(--text);
             text-decoration: none;
+            transform-origin: left center;
+            transition: transform 0.3s ease;
+        }
+
+        nav.scrolled .nav-logo { transform: scale(0.88); }
+
+        nav.scrolled .nav-resume {
+            padding-top: 0.45rem;
+            padding-bottom: 0.45rem;
         }
 
         .nav-links {
             display: flex;
             gap: 2.5rem;
             list-style: none;
+            position: relative;
+        }
+
+        .nav-underline {
+            position: absolute;
+            left: 0;
+            bottom: -7px;
+            width: 1px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--rose), var(--rose-dark));
+            border-radius: 2px;
+            transform: translateX(0) scaleX(0);
+            transform-origin: left center;
+            opacity: 0;
+            pointer-events: none;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
         }
 
         .nav-links a {
@@ -183,7 +244,6 @@
         .nav-links a:hover::after { width: 100%; }
 
         .nav-links a.active { color: var(--rose); }
-        .nav-links a.active::after { width: 100%; }
 
         .nav-resume {
             display: inline-flex;
@@ -309,18 +369,50 @@
             50%       { opacity: 0; }
         }
 
-        .scroll-hint {
+        .roles {
+            margin-top: 0.55rem;
+            font-family: var(--mono);
+            font-size: clamp(0.8rem, 1.35vw, 0.98rem);
+            color: var(--text-mid);
             display: flex;
             align-items: center;
-            gap: 0.65rem;
-            margin-top: 3.5rem;
-            font-family: var(--mono);
-            font-size: 0.72rem;
-            font-weight: 400;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--text-mid);
-            opacity: 0.6;
+            gap: 0.4rem;
+            min-height: 1.6em;
+        }
+
+        .roles-label { opacity: 0.65; }
+
+        .roles-text {
+            color: var(--rose);
+            font-weight: 500;
+        }
+
+        .scroll-hint {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.7rem;
+            margin-top: 3.2rem;
+            width: 18px;
+            opacity: 0.75;
+        }
+
+        .scroll-track {
+            position: relative;
+            width: 2px;
+            height: 56px;
+            background: rgba(176, 80, 112, 0.16);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .scroll-fill {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(var(--rose), var(--rose-dark));
+            transform: scaleY(var(--sp, 0));
+            transform-origin: top center;
+            will-change: transform;
         }
 
         .scroll-arrow { animation: bounce 1.6s ease-in-out infinite; }
@@ -353,7 +445,24 @@
             font-style: italic;
             font-weight: 400;
             color: var(--rose);
+            position: relative;
         }
+
+        h2.sec-title em::after {
+            content: '';
+            position: absolute;
+            left: 0.04em;
+            right: 0.08em;
+            bottom: 0.06em;
+            height: 2px;
+            background: linear-gradient(90deg, var(--rose), rgba(176, 80, 112, 0.25));
+            border-radius: 2px;
+            transform: scaleX(0);
+            transform-origin: left center;
+            transition: transform 0.75s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+        }
+
+        .sec-head.in h2.sec-title em::after { transform: scaleX(1); }
 
         .sec-line {
             width: 52px;
@@ -370,6 +479,10 @@
             align-items: center;
         }
 
+        .about-text {
+            min-width: 0;
+        }
+
         .about-text p {
             font-size: 1.02rem;
             line-height: 1.88;
@@ -378,13 +491,29 @@
         }
 
         .pills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
             margin-top: 1.6rem;
+            overflow: hidden;
+            -webkit-mask: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+                    mask: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+        }
+
+        .pills-track {
+            display: flex;
+            width: max-content;
+            animation: pill-scroll 34s linear infinite;
+        }
+
+        .pills:hover .pills-track { animation-play-state: paused; }
+
+        @keyframes pill-scroll {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
         }
 
         .pill {
+            flex-shrink: 0;
+            white-space: nowrap;
+            margin-right: 0.5rem;
             padding: 0.3rem 0.8rem;
             background: rgba(176, 80, 112, 0.09);
             border: 1px solid rgba(176, 80, 112, 0.14);
@@ -513,10 +642,20 @@
             pointer-events: none;
         }
 
-        .card:hover {
-            transform: translateY(-6px);
+        .cards-grid .card:hover,
+        .cards-grid .card.tilting {
+            transform: perspective(900px)
+                       rotateX(var(--rx, 0deg))
+                       rotateY(var(--ry, 0deg))
+                       translateY(-6px);
             box-shadow: var(--shadow-lg);
             border-color: var(--border-strong);
+        }
+
+        .cards-grid .card.tilting {
+            transition: transform 0.13s ease-out,
+                        box-shadow 0.35s ease,
+                        border-color 0.35s ease;
         }
 
         .card:hover::before,
@@ -774,9 +913,10 @@
 
         .fade-up.in { opacity: 1; transform: translateY(0); }
 
-        .fade-up[data-d="1"] { transition-delay: 0.08s; }
-        .fade-up[data-d="2"] { transition-delay: 0.16s; }
-        .fade-up[data-d="3"] { transition-delay: 0.24s; }
+        .fade-up[data-d="1"] { transition-delay: 0.1s; }
+        .fade-up[data-d="2"] { transition-delay: 0.2s; }
+        .fade-up[data-d="3"] { transition-delay: 0.3s; }
+        .fade-up[data-d="4"] { transition-delay: 0.4s; }
 
         /* ─── Responsive ─── */
         @media (max-width: 900px) {
@@ -797,6 +937,23 @@
             .contact-row { flex-direction: column; }
             footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
         }
+
+        @media (prefers-reduced-motion: reduce) {
+            .pills {
+                overflow: visible;
+                -webkit-mask: none;
+                        mask: none;
+            }
+            .pills-track {
+                animation: none !important;
+                transform: none !important;
+                flex-wrap: wrap;
+                width: auto;
+            }
+            .pills-track .pill[aria-hidden="true"] { display: none; }
+            .hero-blob { display: none !important; }
+            .scroll-arrow { animation: none !important; }
+        }
     </style>
 </head>
 <body>
@@ -805,6 +962,7 @@
 <canvas id="canvas"></canvas>
 <div class="grid-glow" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
+<div class="scroll-progress" aria-hidden="true"><span></span></div>
 
 <!-- ─── NAV ─── -->
 <nav id="nav">
@@ -816,6 +974,7 @@
         <li><a href="#projects">Projects</a></li>
         <li><a href="#explorations">Explorations</a></li>
         <li><a href="#contact">Contact</a></li>
+        <li class="nav-underline" aria-hidden="true"></li>
     </ul>
     <a href="Ramachandruni.MallikaLaasya.Resume.pdf" target="_blank" rel="noopener" class="nav-resume">Resume ↗&#xFE0E;</a>
 </nav>
@@ -831,10 +990,13 @@
         </span>
         <span class="name-row2">Ramachandruni</span>
         <p class="subtext">
-            <span id="tw"></span><span class="cursor-blink"></span>
+            <span id="tw"></span><span class="cursor-blink" id="tw-caret"></span>
         </p>
-        <div class="scroll-hint">
-            <span>Scroll to explore</span>
+        <p class="roles">
+            <span class="roles-label">I'm a</span><span id="roles" class="roles-text"></span><span class="cursor-blink"></span>
+        </p>
+        <div class="scroll-hint" aria-hidden="true">
+            <span class="scroll-track"><span class="scroll-fill"></span></span>
             <svg class="scroll-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M8 3v10M3 9l5 5 5-5" stroke="#b05070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -865,20 +1027,36 @@
                 </p>
 
                 <div class="pills">
-                    <span class="pill">Java</span>
-                    <span class="pill">Python</span>
-                    <span class="pill">TypeScript</span>
-                    <span class="pill">JavaScript</span>
-                    <span class="pill">SQL</span>
-                    <span class="pill">React</span>
-                    <span class="pill">Next.js</span>
-                    <span class="pill">FastAPI</span>
-                    <span class="pill">Node.js</span>
-                    <span class="pill">Tailwind CSS</span>
-                    <span class="pill">scikit-learn</span>
-                    <span class="pill">Docker</span>
-                    <span class="pill">Supabase</span>
-                    <span class="pill">Firebase</span>
+                    <div class="pills-track">
+                        <span class="pill">Java</span>
+                        <span class="pill">Python</span>
+                        <span class="pill">TypeScript</span>
+                        <span class="pill">JavaScript</span>
+                        <span class="pill">SQL</span>
+                        <span class="pill">React</span>
+                        <span class="pill">Next.js</span>
+                        <span class="pill">FastAPI</span>
+                        <span class="pill">Node.js</span>
+                        <span class="pill">Tailwind CSS</span>
+                        <span class="pill">scikit-learn</span>
+                        <span class="pill">Docker</span>
+                        <span class="pill">Supabase</span>
+                        <span class="pill">Firebase</span>
+                        <span class="pill" aria-hidden="true">Java</span>
+                        <span class="pill" aria-hidden="true">Python</span>
+                        <span class="pill" aria-hidden="true">TypeScript</span>
+                        <span class="pill" aria-hidden="true">JavaScript</span>
+                        <span class="pill" aria-hidden="true">SQL</span>
+                        <span class="pill" aria-hidden="true">React</span>
+                        <span class="pill" aria-hidden="true">Next.js</span>
+                        <span class="pill" aria-hidden="true">FastAPI</span>
+                        <span class="pill" aria-hidden="true">Node.js</span>
+                        <span class="pill" aria-hidden="true">Tailwind CSS</span>
+                        <span class="pill" aria-hidden="true">scikit-learn</span>
+                        <span class="pill" aria-hidden="true">Docker</span>
+                        <span class="pill" aria-hidden="true">Supabase</span>
+                        <span class="pill" aria-hidden="true">Firebase</span>
+                    </div>
                 </div>
 
                 <div class="awards-list">
@@ -940,9 +1118,9 @@
             <h2 class="sec-title">Experience<em>.</em></h2>
             <div class="sec-line"></div>
         </div>
-        <div class="timeline fade-up">
+        <div class="timeline">
 
-            <div class="tl-item">
+            <div class="tl-item fade-up">
                 <div class="tl-dot"></div>
                 <div class="tl-date">Jul. 2025 – Aug. 2025</div>
                 <div class="tl-title">Scholar</div>
@@ -954,7 +1132,7 @@
                 </ul>
             </div>
 
-            <div class="tl-item">
+            <div class="tl-item fade-up" data-d="1">
                 <div class="tl-dot"></div>
                 <div class="tl-date">Jan. 2026 – Present</div>
                 <div class="tl-title">Research Assistant</div>
@@ -967,7 +1145,7 @@
                 </ul>
             </div>
 
-            <div class="tl-item">
+            <div class="tl-item fade-up" data-d="2">
                 <div class="tl-dot"></div>
                 <div class="tl-date">May 2026 – Present · Remote</div>
                 <div class="tl-title">Student Engineer</div>
@@ -980,7 +1158,7 @@
                 </ul>
             </div>
 
-            <div class="tl-item">
+            <div class="tl-item fade-up" data-d="3">
                 <div class="tl-dot"></div>
                 <div class="tl-date">Aug. 2026 – Present</div>
                 <div class="tl-title">Computer Science Tutor</div>
@@ -1337,10 +1515,53 @@
         if (i < text.length) {
             i++;
             setTimeout(type, i === 1 ? 900 : 52 + Math.random() * 38);
+        } else {
+            const caret = document.getElementById('tw-caret');
+            if (caret) caret.style.display = 'none';
         }
     }
 
     setTimeout(type, 700);
+})();
+
+// ════════════════════════════════════════════════
+// ROTATING ROLES — type / pause / delete / next
+// ════════════════════════════════════════════════
+(function () {
+    const el = document.getElementById('roles');
+    if (!el) return;
+
+    const roles  = ['CS student', 'researcher', 'builder', 'tutor'];
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reduce) {
+        el.textContent = roles.join(' · ');
+        return;
+    }
+
+    let r = 0, ch = 0, deleting = false;
+
+    function tick() {
+        const word = roles[r];
+        el.textContent = word.slice(0, ch);
+
+        if (!deleting && ch < word.length) {
+            ch++;
+            setTimeout(tick, 70 + Math.random() * 45);
+        } else if (!deleting && ch === word.length) {
+            deleting = true;
+            setTimeout(tick, 1400);
+        } else if (deleting && ch > 0) {
+            ch--;
+            setTimeout(tick, 36);
+        } else {
+            deleting = false;
+            r = (r + 1) % roles.length;
+            setTimeout(tick, 260);
+        }
+    }
+
+    setTimeout(tick, 1600);
 })();
 
 // ════════════════════════════════════════════════
@@ -1373,8 +1594,22 @@
 // NAV SCROLL SPY
 // ════════════════════════════════════════════════
 (function () {
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-links a');
+    const sections  = document.querySelectorAll('section[id]');
+    const navLinks  = document.querySelectorAll('.nav-links a');
+    const underline = document.querySelector('.nav-underline');
+
+    function moveUnderline() {
+        if (!underline) return;
+        const active = document.querySelector('.nav-links a.active');
+        // hidden nav (mobile) → offsetParent is null
+        if (!active || active.offsetParent === null) {
+            underline.style.opacity = '0';
+            return;
+        }
+        underline.style.opacity = '1';
+        underline.style.transform =
+            `translateX(${active.offsetLeft}px) scaleX(${active.offsetWidth})`;
+    }
 
     function updateActive() {
         const scrollY = window.scrollY;
@@ -1389,9 +1624,13 @@
         navLinks.forEach(link => {
             link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
         });
+
+        moveUnderline();
     }
 
     window.addEventListener('scroll', updateActive, { passive: true });
+    window.addEventListener('resize', moveUnderline, { passive: true });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(moveUnderline);
     updateActive();
 })();
 
@@ -1418,24 +1657,172 @@
 })();
 
 // ════════════════════════════════════════════════
-// CARD SPOTLIGHT — cursor-tracked glow + border
+// CARD SPOTLIGHT + 3D TILT — cursor-tracked
 // ════════════════════════════════════════════════
 (function () {
-    const cards = document.querySelectorAll('.card');
-    let ticking = false;
+    const cards  = document.querySelectorAll('.card');
+    const fine   = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const tiltOK = fine && !reduce;
+    const MAX    = 8; // degrees
 
     cards.forEach(card => {
+        let raf = null;
+
         card.addEventListener('pointermove', e => {
-            if (ticking) return;
-            ticking = true;
-            requestAnimationFrame(() => {
-                const r = card.getBoundingClientRect();
-                card.style.setProperty('--mx', `${e.clientX - r.left}px`);
-                card.style.setProperty('--my', `${e.clientY - r.top}px`);
-                ticking = false;
+            if (raf) return;
+            const r = card.getBoundingClientRect();
+            const px = (e.clientX - r.left) / r.width;
+            const py = (e.clientY - r.top) / r.height;
+
+            raf = requestAnimationFrame(() => {
+                card.style.setProperty('--mx', `${px * r.width}px`);
+                card.style.setProperty('--my', `${py * r.height}px`);
+                if (tiltOK) {
+                    card.classList.add('tilting');
+                    card.style.setProperty('--ry', `${(px - 0.5) * 2 * MAX}deg`);
+                    card.style.setProperty('--rx', `${-(py - 0.5) * 2 * MAX}deg`);
+                }
+                raf = null;
             });
         });
+
+        card.addEventListener('pointerleave', () => {
+            card.classList.remove('tilting');
+            card.style.setProperty('--rx', '0deg');
+            card.style.setProperty('--ry', '0deg');
+        });
     });
+})();
+
+// ════════════════════════════════════════════════
+// SCROLL PROGRESS BAR + HERO FILL INDICATOR
+// ════════════════════════════════════════════════
+(function () {
+    const bar  = document.querySelector('.scroll-progress span');
+    const fill = document.querySelector('.scroll-fill');
+    const hero = document.getElementById('hero');
+    let ticking = false;
+
+    function update() {
+        const st  = window.scrollY || document.documentElement.scrollTop;
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const p   = max > 0 ? st / max : 0;
+
+        if (bar) bar.style.setProperty('--progress', p.toFixed(4));
+        if (fill && hero) {
+            const hp = Math.min(1, Math.max(0, st / (hero.offsetHeight * 0.85)));
+            fill.style.setProperty('--sp', hp.toFixed(4));
+        }
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    update();
+})();
+
+// ════════════════════════════════════════════════
+// HERO CURSOR BLOB — soft trailing glow, hero only
+// ════════════════════════════════════════════════
+(function () {
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const hero = document.getElementById('hero');
+    if (!hero) return;
+
+    const blob = document.createElement('div');
+    blob.className = 'hero-blob';
+    blob.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(blob);
+
+    let tx = window.innerWidth / 2, ty = window.innerHeight * 0.4;
+    let cx = tx, cy = ty, inside = false;
+
+    function loop() {
+        cx += (tx - cx) * 0.1;
+        cy += (ty - cy) * 0.1;
+        blob.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
+        requestAnimationFrame(loop);
+    }
+
+    window.addEventListener('pointermove', e => {
+        tx = e.clientX;
+        ty = e.clientY;
+        const r  = hero.getBoundingClientRect();
+        const ni = e.clientY > r.top && e.clientY < r.bottom;
+        if (ni !== inside) { inside = ni; blob.classList.toggle('on', ni); }
+    }, { passive: true });
+
+    window.addEventListener('scroll', () => {
+        if (inside && window.scrollY > hero.offsetHeight) {
+            inside = false;
+            blob.classList.remove('on');
+        }
+    }, { passive: true });
+
+    loop();
+})();
+
+// ════════════════════════════════════════════════
+// EASTER EGG — type "mlr" for a confetti burst
+// ════════════════════════════════════════════════
+(function () {
+    const SEQ    = 'mlr';
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let buf = '';
+
+    window.addEventListener('keydown', e => {
+        if (e.metaKey || e.ctrlKey || e.altKey) return;
+        if (e.key.length !== 1) return;
+        const t = e.target.tagName;
+        if (t === 'INPUT' || t === 'TEXTAREA' || e.target.isContentEditable) return;
+
+        buf = (buf + e.key.toLowerCase()).slice(-SEQ.length);
+        if (buf === SEQ) { buf = ''; celebrate(); }
+    });
+
+    function celebrate() {
+        if (reduce) {
+            document.body.animate(
+                [{ filter: 'brightness(1)' }, { filter: 'brightness(1.12)' }, { filter: 'brightness(1)' }],
+                { duration: 600, easing: 'ease-in-out' }
+            );
+            return;
+        }
+
+        const colors = ['#b05070', '#7a3050', '#e88aa8', '#d96f96', '#ffffff', '#8a2252'];
+        const cx = window.innerWidth / 2;
+        const cy = window.innerHeight / 2;
+
+        for (let i = 0; i < 46; i++) {
+            const p = document.createElement('div');
+            const s = 6 + Math.random() * 7;
+            p.style.cssText =
+                `position:fixed;left:${cx}px;top:${cy}px;width:${s}px;height:${s}px;` +
+                `background:${colors[i % colors.length]};` +
+                `border-radius:${Math.random() < 0.5 ? '50%' : '2px'};` +
+                `z-index:9999;pointer-events:none;will-change:transform,opacity;`;
+            document.body.appendChild(p);
+
+            const ang  = Math.random() * Math.PI * 2;
+            const dist = 130 + Math.random() * 280;
+            const dx   = Math.cos(ang) * dist;
+            const dy   = Math.sin(ang) * dist;
+            const rot  = Math.random() * 720 - 360;
+
+            p.animate([
+                { transform: 'translate(0,0) rotate(0deg)', opacity: 1 },
+                { transform: `translate(${dx}px, ${dy + 220}px) rotate(${rot}deg)`, opacity: 0 }
+            ], {
+                duration: 1100 + Math.random() * 700,
+                easing: 'cubic-bezier(0.2, 0.6, 0.35, 1)'
+            }).onfinish = () => p.remove();
+        }
+    }
 })();
 </script>
 
